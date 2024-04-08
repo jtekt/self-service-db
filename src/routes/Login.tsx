@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form"
 import { Input } from "@/components/ui/input"
 import { Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useNavigate } from "react-router-dom"
 import {
   Form,
   FormControl,
@@ -12,6 +13,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import Cookies from "universal-cookie"
+
+const { VITE_API_URL } = import.meta.env
 
 export default function () {
   const [loggingIn, setLoggingIn] = useState(false)
@@ -23,6 +27,8 @@ export default function () {
     },
   })
 
+  const navigate = useNavigate()
+
   async function onSubmit(values: any) {
     const url = `${VITE_API_URL}/login`
     const options = {
@@ -32,9 +38,20 @@ export default function () {
       },
       body: JSON.stringify(values),
     }
-    const response = await fetch(url, options)
-    const data = await response.json()
-    console.log(data)
+
+    setLoggingIn(true)
+    try {
+      const response = await fetch(url, options)
+      const { token } = await response.json()
+      const cookies = new Cookies()
+      cookies.set("token", token, { path: "/" })
+
+      navigate("/databases")
+    } catch (error) {
+      alert(error)
+    } finally {
+      setLoggingIn(false)
+    }
   }
 
   return (

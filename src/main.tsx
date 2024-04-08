@@ -7,6 +7,9 @@ import { ThemeProvider } from "@/components/theme-provider"
 import Root from "@/routes/Root"
 import Login from "@/routes/Login"
 import Register from "@/routes/Register"
+import Databases from "@/routes/Databases"
+import NewDatabase from "@/routes/NewDatabase"
+import Database from "@/routes/Database"
 
 const router = createBrowserRouter([
   {
@@ -20,6 +23,18 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/databases",
+    element: <Databases />,
+  },
+  {
+    path: "/databases/new",
+    element: <NewDatabase />,
+  },
+  {
+    path: "/databases/:name",
+    element: <Database />,
   },
 ])
 

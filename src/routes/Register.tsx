@@ -12,11 +12,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { useNavigate } from "react-router-dom"
+import Cookies from "universal-cookie"
 
 const { VITE_API_URL } = import.meta.env
 
 export default function () {
-  const [loggingIn, setLoggingIn] = useState(false)
+  const [registering, setRegistering] = useState(false)
 
   const form = useForm({
     defaultValues: {
@@ -25,6 +27,8 @@ export default function () {
       passwordConfirm: "",
     },
   })
+
+  const navigate = useNavigate()
 
   async function onSubmit(values: any) {
     const url = `${VITE_API_URL}/users`
@@ -35,9 +39,20 @@ export default function () {
       },
       body: JSON.stringify(values),
     }
-    const response = await fetch(url, options)
-    const data = await response.json()
-    console.log(data)
+
+    setRegistering(true)
+    try {
+      const response = await fetch(url, options)
+      const { token } = await response.json()
+      const cookies = new Cookies()
+      cookies.set("token", token, { path: "/" })
+
+      navigate("/databases")
+    } catch (error) {
+      alert(error)
+    } finally {
+      setRegistering(false)
+    }
   }
 
   return (
@@ -86,8 +101,8 @@ export default function () {
             </FormItem>
           )}
         />
-        <Button disabled={loggingIn} type="submit" className="block mx-auto">
-          {loggingIn ? (
+        <Button disabled={registering} type="submit" className="block mx-auto">
+          {registering ? (
             <Loader2 className="mx-auto h-4 w-4 animate-spin" />
           ) : (
             <span>Register</span>
