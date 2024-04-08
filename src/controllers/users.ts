@@ -1,6 +1,9 @@
 import { Context } from "hono"
 import { client } from "../db"
 import format = require("pg-format")
+import * as jwt from "jsonwebtoken"
+
+const { JWT_SECRET = "sh..." } = process.env
 
 type NewAccount = {
   username: string
@@ -21,5 +24,8 @@ export const createUser = async (c: Context) => {
   )
 
   await client.query(query)
-  return c.json({ status: "OK" })
+
+  const token = jwt.sign({ username }, JWT_SECRET)
+
+  return c.json({ token })
 }

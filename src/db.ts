@@ -14,4 +14,4 @@ export const client = new Client({
   password: DB_PASSWORD,
 })
 
-await client.connect()
+client.connect()
