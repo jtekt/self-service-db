@@ -32,7 +32,7 @@ export const middleware = async (c: Context, next: Next) => {
     throw new HTTPException(401, { message: "Authorization header not set" })
 
   const token = Authorization.split(" ")[1]
-  if (!token) new HTTPException(401, { message: "Token not found" })
+  if (!token) throw new HTTPException(401, { message: "Token not found" })
 
   try {
     const user = jwt.verify(token, JWT_SECRET)
