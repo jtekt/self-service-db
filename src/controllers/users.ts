@@ -1,5 +1,5 @@
 import { Context } from "hono"
-import { client } from "../db"
+import { pool } from "../db"
 import format = require("pg-format")
 import * as jwt from "jsonwebtoken"
 import { JWT_SECRET } from "../config"
@@ -22,7 +22,7 @@ export const createUser = async (c: Context) => {
     password
   )
 
-  await client.query(query)
+  await pool.query(query)
 
   const token = jwt.sign({ username }, JWT_SECRET)
 
