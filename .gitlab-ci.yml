@@ -44,6 +44,15 @@ deploy:
   only:
     - master
     - main
+  before_script:
+    - >
+      kubectl create secret docker-registry ${K8S_ECR_SECRET}
+      --docker-server=${ECR_URL}
+      --docker-username=AWS
+      --docker-password $(aws ecr get-login-password)
+      --dry-run=client -o yaml
+      | kubectl apply -f -
+
   script:
     - envsubst < kubernetes_manifest.yml | kubectl apply -f -
   environment:
