@@ -1,6 +1,6 @@
 stages:
   - build
-  # - deploy
+  - deploy
 
 image: moreillon/ci-dind:4bca50d7
 services:
@@ -36,17 +36,17 @@ build:
   script:
     - docker build -t ${CONTAINER_IMAGE_TAGGED} .
     - docker push ${CONTAINER_IMAGE_TAGGED}
-# deploy:
-#   stage: deploy
-#   tags:
-#     - dind
-#   only:
-#     - master
-#     - main
-#   script:
-#     - envsubst < kubernetes_manifest.yml | kubectl apply -f -
-#   environment:
-#     name: staging
-#     kubernetes:
-#       namespace: ${K8S_NAMESPACE}
 
+deploy:
+  stage: deploy
+  tags:
+    - dind
+  only:
+    - master
+    - main
+  script:
+    - envsubst < kubernetes_manifest.yml | kubectl apply -f -
+  environment:
+    name: staging
+    kubernetes:
+      namespace: ${K8S_NAMESPACE}
