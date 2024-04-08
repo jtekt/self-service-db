@@ -2,8 +2,7 @@ import { Context } from "hono"
 import { client } from "../db"
 import format = require("pg-format")
 import * as jwt from "jsonwebtoken"
-
-const { JWT_SECRET = "sh..." } = process.env
+import { JWT_SECRET } from "../config"
 
 type NewAccount = {
   username: string

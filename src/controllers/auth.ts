@@ -2,12 +2,7 @@ import { Context, Next } from "hono"
 import { Client } from "pg"
 import * as jwt from "jsonwebtoken"
 import { HTTPException } from "hono/http-exception"
-
-const {
-  DB_HOST = "localhost",
-  DB_PORT = "5432",
-  JWT_SECRET = "sh...",
-} = process.env
+import { DB_HOST, DB_PORT, JWT_SECRET } from "../config"
 
 type Credentials = {
   username: string
@@ -30,13 +25,7 @@ export const login = async (c: Context) => {
   return c.json({ token })
 }
 
-type Options = {
-  url: string
-}
-
-export const middleware = (opts: Options) => async (c: Context, next: Next) => {
-  const { url } = opts
-
+export const middleware = async (c: Context, next: Next) => {
   const Authorization = c.req.header("Authorization")
 
   if (!Authorization)

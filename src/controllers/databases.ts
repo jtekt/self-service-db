@@ -2,8 +2,7 @@ import { Context } from "hono"
 import { client } from "../db"
 import format = require("pg-format")
 import { HTTPException } from "hono/http-exception"
-
-const { DB_HOST = "localhost", DB_PORT = "5432" } = process.env
+import { DB_HOST, DB_PORT } from "../config"
 
 const getUserIdByName = async (username: string) => {
   const query = `SELECT usesysid FROM pg_catalog.pg_user WHERE usename = $1;`

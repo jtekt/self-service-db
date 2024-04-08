@@ -9,16 +9,23 @@ import { createUser } from "./controllers/users"
 import { login } from "./controllers/auth"
 import { middleware } from "./controllers/auth"
 import { cors } from "hono/cors"
-
-const { IDENTIFICATION_URL = "http://10.115.1.100:30097/v3/users/self" } =
-  process.env
+import { DB_HOST, DB_PORT } from "./config"
 
 const app = new Hono()
 app.use(cors())
+app.get("/", (c) =>
+  c.json({
+    application: "DB on demand",
+    db: {
+      host: DB_HOST,
+      port: DB_PORT,
+    },
+  })
+)
 app.post("/login", login)
 app.post("/users", createUser)
 
-app.use(middleware({ url: IDENTIFICATION_URL }))
+app.use(middleware)
 app.get("/databases", readDatabases)
 app.post("/databases", createDatabase)
 app.get("/databases/:name", readDatabase)
