@@ -29,7 +29,10 @@ export default function () {
     setLoading(true)
     try {
       const response = await fetch(url, options)
-      if (response.status === 401) navigate("/login")
+      if (response.status === 401) {
+        cookies.remove("token")
+        return navigate("/login")
+      }
       await response.json()
       navigate("/databases")
     } catch (error) {
