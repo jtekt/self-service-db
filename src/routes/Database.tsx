@@ -2,10 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 import Cookies from "universal-cookie"
 import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
 import { useNavigate } from "react-router-dom"
 import { Loader2 } from "lucide-react"
-import { Routes, Route, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import DeleteButton from "@/components/DeleteButton"
 import {
   Breadcrumb,
