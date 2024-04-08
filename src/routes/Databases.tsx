@@ -8,15 +8,6 @@ import { Button } from "@/components/ui/button"
 
 import { Loader2 } from "lucide-react"
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-
 const { VITE_API_URL } = import.meta.env
 
 export default function () {
@@ -74,22 +65,13 @@ export default function () {
         {loading ? (
           <Loader2 className="mx-auto h-12 w-12 animate-spin" />
         ) : (
-          <Table className="mt-4">
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[100px]">Name</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {databases.map((database: any) => (
-                <TableRow key={database}>
-                  <TableCell className="font-medium">
-                    <Link to={`/databases/${database}`}>{database}</Link>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <ul>
+            {databases.map((database: any) => (
+              <li key={database} className="my-2">
+                <Link to={`/databases/${database}`}>{database}</Link>
+              </li>
+            ))}
+          </ul>
         )}
       </CardContent>
     </Card>
