@@ -20,6 +20,7 @@ export const login = async (c: Context) => {
     port: Number(DB_PORT),
     user: username,
     password,
+    database: "postgres",
   })
 
   await client.connect()
