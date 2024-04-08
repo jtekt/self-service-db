@@ -1,7 +1,6 @@
 import { Context } from "hono"
 import { client } from "../db"
-// @ts-ignore
-import format from "pg-format"
+import format = require("pg-format")
 
 type NewAccount = {
   username: string

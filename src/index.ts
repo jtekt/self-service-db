@@ -1,5 +1,5 @@
 import { Hono } from "hono"
-import { readerUserDatabases } from "./controllers/databases"
+import { createDatabase, readDatabases } from "./controllers/databases"
 import { createUser } from "./controllers/users"
 import { login } from "./controllers/auth"
 import { middleware } from "./controllers/auth"
@@ -12,6 +12,7 @@ app.post("/login", login)
 app.post("/users", createUser)
 
 app.use(middleware({ url: IDENTIFICATION_URL }))
-app.get("/databases", readerUserDatabases)
+app.get("/databases", readDatabases)
+app.post("/databases", createDatabase)
 
 export default app
