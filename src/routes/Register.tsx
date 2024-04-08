@@ -121,7 +121,11 @@ export default function () {
           </form>
         </Form>
         <p className="text-center mt-4">
-          Already have an account? Login <Link to="/login"> here</Link>
+          Already have an account? Login{" "}
+          <Link to="/login" className="font-bold text-primary">
+            {" "}
+            here
+          </Link>
         </p>
       </CardContent>
     </Card>

@@ -104,7 +104,11 @@ export default function () {
             </Button>
           </form>
           <p className="text-center mt-4">
-            No account? Register <Link to="/register"> here</Link>
+            No account? Register{" "}
+            <Link to="/register" className="font-bold text-primary">
+              {" "}
+              here
+            </Link>
           </p>
         </Form>
       </CardContent>
