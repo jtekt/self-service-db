@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form"
 import Cookies from "universal-cookie"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { TOKEN_COOKIE_NAME } from "@/config"
 
 const { VITE_API_URL } = import.meta.env
 
@@ -45,7 +46,7 @@ export default function () {
       const response = await fetch(url, options)
       const { token } = await response.json()
       const cookies = new Cookies()
-      cookies.set("token", token, { path: "/" })
+      cookies.set(TOKEN_COOKIE_NAME, token, { path: "/" })
 
       navigate("/databases")
     } catch (error) {

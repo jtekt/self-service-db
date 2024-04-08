@@ -14,6 +14,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import { TOKEN_COOKIE_NAME } from "@/config"
 
 const { VITE_API_URL, VITE_DB_HOST, VITE_DB_PORT } = import.meta.env
 
@@ -26,7 +27,7 @@ export default function () {
 
   async function getData() {
     const cookies = new Cookies()
-    const token = cookies.get("token")
+    const token = cookies.get(TOKEN_COOKIE_NAME)
 
     const url = `${VITE_API_URL}/databases/${name}`
 
@@ -40,7 +41,7 @@ export default function () {
     try {
       const response = await fetch(url, options)
       if (response.status === 401) {
-        cookies.remove("token")
+        cookies.remove(TOKEN_COOKIE_NAME)
         return navigate("/login")
       }
       const data = await response.json()

@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 
 import { Loader2 } from "lucide-react"
+import { TOKEN_COOKIE_NAME } from "@/config"
 
 const { VITE_API_URL } = import.meta.env
 
@@ -18,7 +19,7 @@ export default function () {
 
   async function getData() {
     const cookies = new Cookies()
-    const token = cookies.get("token")
+    const token = cookies.get(TOKEN_COOKIE_NAME)
 
     const url = `${VITE_API_URL}/databases`
 
@@ -32,7 +33,7 @@ export default function () {
     try {
       const response = await fetch(url, options)
       if (response.status === 401) {
-        cookies.remove("token")
+        cookies.remove(TOKEN_COOKIE_NAME)
         return navigate("/login")
       }
       const data = await response.json()

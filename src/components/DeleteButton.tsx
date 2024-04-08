@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { useParams } from "react-router-dom"
 import Cookies from "universal-cookie"
 import { useState } from "react"
+import { TOKEN_COOKIE_NAME } from "@/config"
 
 const { VITE_API_URL } = import.meta.env
 
@@ -16,7 +17,7 @@ export default function () {
   async function deleteDb() {
     if (!confirm("Delete DB?")) return
     const cookies = new Cookies()
-    const token = cookies.get("token")
+    const token = cookies.get(TOKEN_COOKIE_NAME)
 
     const url = `${VITE_API_URL}/databases/${name}`
 
@@ -30,7 +31,7 @@ export default function () {
     try {
       const response = await fetch(url, options)
       if (response.status === 401) {
-        cookies.remove("token")
+        cookies.remove(TOKEN_COOKIE_NAME)
         return navigate("/login")
       }
       await response.json()
