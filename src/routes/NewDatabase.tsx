@@ -56,9 +56,9 @@ export default function () {
     setLoading(true)
     try {
       const response = await fetch(url, options)
-      await response.json()
+      const data = await response.json()
 
-      navigate("/databases")
+      navigate(`/databases/${data.database}`)
     } catch (error) {
       alert(error)
     } finally {
