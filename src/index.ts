@@ -1,10 +1,5 @@
 import { Hono } from "hono"
-import {
-  createDatabase,
-  readDatabases,
-  readDatabase,
-  deleteDatabase,
-} from "./controllers/databases"
+import databaseRoutes from "./routes/databases"
 import { createUser } from "./controllers/users"
 import { login } from "./controllers/auth"
 import { middleware } from "./controllers/auth"
@@ -26,9 +21,6 @@ app.post("/login", login)
 app.post("/users", createUser)
 
 app.use(middleware)
-app.get("/databases", readDatabases)
-app.post("/databases", createDatabase)
-app.get("/databases/:name", readDatabase)
-app.delete("/databases/:name", deleteDatabase)
+app.route("/databases", databaseRoutes)
 
 export default app
