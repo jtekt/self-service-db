@@ -33,9 +33,12 @@ export const middleware = async (c: Context, next: Next) => {
 
   const token = Authorization.split(" ")[1]
   if (!token) new HTTPException(401, { message: "Token not found" })
-  const user = jwt.verify(token, JWT_SECRET)
 
-  c.set("user", user)
-
-  await next()
+  try {
+    const user = jwt.verify(token, JWT_SECRET)
+    c.set("user", user)
+    await next()
+  } catch (error) {
+    new HTTPException(401, { message: "Token validation failed" })
+  }
 }
