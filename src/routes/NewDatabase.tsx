@@ -81,7 +81,7 @@ export default function () {
       </Breadcrumb>
       <Card className="mt-4">
         <CardHeader>
-          <CardTitle>Databases</CardTitle>
+          <CardTitle>New database</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>

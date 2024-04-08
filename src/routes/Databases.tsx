@@ -43,7 +43,6 @@ export default function () {
       if (response.status === 401) navigate("/login")
       const data = await response.json()
       setDatabases(data.items)
-      console.log(data)
     } catch (error) {
       alert("Data query failed")
     } finally {

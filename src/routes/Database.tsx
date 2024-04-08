@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { useNavigate } from "react-router-dom"
 import { Loader2 } from "lucide-react"
 import { Routes, Route, useParams } from "react-router-dom"
-
+import DeleteButton from "@/components/DeleteButton"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -74,6 +74,9 @@ export default function () {
           <CardTitle>{database ? database.db : "Database"}</CardTitle>
         </CardHeader>
         <CardContent>
+          <div className="flex justify-end">
+            <DeleteButton />
+          </div>
           {loading ? (
             <Loader2 className="mx-auto h-12 w-12 animate-spin" />
           ) : (
