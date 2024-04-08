@@ -55,52 +55,43 @@ export default function () {
   }, [])
 
   return (
-    <div className="m-4">
-      <Card>
-        <CardHeader>
-          <CardTitle>Databases</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex justify-end">
-            <Button asChild>
-              <Link
-                className={buttonVariants({ variant: "outline" })}
-                to="/databases/new"
-              >
-                New
-              </Link>
-            </Button>
-          </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Databases</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex justify-end">
+          <Button asChild>
+            <Link
+              className={buttonVariants({ variant: "outline" })}
+              to="/databases/new"
+            >
+              New
+            </Link>
+          </Button>
+        </div>
 
-          {loading ? (
-            <Loader2 className="mx-auto h-12 w-12 animate-spin" />
-          ) : (
-            <Table className="mt-4">
-              {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[100px]">Name</TableHead>
+        {loading ? (
+          <Loader2 className="mx-auto h-12 w-12 animate-spin" />
+        ) : (
+          <Table className="mt-4">
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[100px]">Name</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {databases.map((database: any) => (
+                <TableRow key={database}>
+                  <TableCell className="font-medium">
+                    <Link to={`/databases/${database}`}>{database}</Link>
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {databases.map((database: any) => (
-                  <TableRow key={database}>
-                    <TableCell className="font-medium">
-                      <Link to={`/databases/${database}`}>{database}</Link>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-              {/* <TableFooter>
-  <TableRow>
-  <TableCell colSpan={3}>Total</TableCell>
-  <TableCell className="text-right">$2,500.00</TableCell>
-  </TableRow>
-</TableFooter> */}
-            </Table>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </CardContent>
+    </Card>
   )
 }

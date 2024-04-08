@@ -56,64 +56,58 @@ export default function () {
   }
 
   return (
-    <div className="m-4">
-      <Card className="mx-auto max-w-2xl">
-        <CardHeader>
-          <CardTitle>Login</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Username</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Username" {...field} />
-                    </FormControl>
-                    <FormDescription>Your username</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Password"
-                        type="password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription>Your password</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button
-                disabled={loggingIn}
-                type="submit"
-                className="block mx-auto"
-              >
-                {loggingIn ? (
-                  <Loader2 className="mx-auto h-4 w-4 animate-spin" />
-                ) : (
-                  <span>Login</span>
-                )}
-              </Button>
-            </form>
-            <p className="text-center mt-4">
-              No account? Register <Link to="/register"> here</Link>
-            </p>
-          </Form>
-        </CardContent>
-      </Card>
-    </div>
+    <Card className="mx-auto max-w-2xl">
+      <CardHeader>
+        <CardTitle>Login</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Username" {...field} />
+                  </FormControl>
+                  <FormDescription>Your username</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Password" type="password" {...field} />
+                  </FormControl>
+                  <FormDescription>Your password</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              disabled={loggingIn}
+              type="submit"
+              className="block mx-auto"
+            >
+              {loggingIn ? (
+                <Loader2 className="mx-auto h-4 w-4 animate-spin" />
+              ) : (
+                <span>Login</span>
+              )}
+            </Button>
+          </form>
+          <p className="text-center mt-4">
+            No account? Register <Link to="/register"> here</Link>
+          </p>
+        </Form>
+      </CardContent>
+    </Card>
   )
 }

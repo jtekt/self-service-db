@@ -15,7 +15,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 
-const { VITE_API_URL } = import.meta.env
+const { VITE_API_URL, VITE_DB_HOST, VITE_DB_PORT } = import.meta.env
 
 export default function () {
   const [loading, setLoading] = useState(false)
@@ -54,7 +54,7 @@ export default function () {
   }, [])
 
   return (
-    <div className="m-4">
+    <>
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -83,13 +83,15 @@ export default function () {
           )}
           {database ? (
             <>
-              <p>Host: {database.host}</p>
-              <p>Port: {database.port}</p>
+              <p>Host: {VITE_DB_HOST || database.host}</p>
+              <p>Port: {VITE_DB_PORT || database.port}</p>
               <p>Database: {database.db}</p>
               <p>User: {database.username}</p>
               <p>
                 Connection string:{" "}
-                {`postgresql://${database.username}:YOUR_PASSWORD@${database.host}:${database.port}/${database.db}`}
+                {`postgresql://${database.username}:YOUR_PASSWORD@${
+                  VITE_DB_HOST || database.host
+                }:${VITE_DB_PORT || database.port}/${database.db}`}
               </p>
             </>
           ) : (
@@ -97,6 +99,6 @@ export default function () {
           )}
         </CardContent>
       </Card>
-    </div>
+    </>
   )
 }

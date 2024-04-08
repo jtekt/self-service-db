@@ -67,7 +67,7 @@ export default function () {
   }
 
   return (
-    <div className="m-4">
+    <>
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -116,6 +116,6 @@ export default function () {
           </Form>
         </CardContent>
       </Card>
-    </div>
+    </>
   )
 }
