@@ -38,25 +38,24 @@ build:
     - docker build -t ${CONTAINER_IMAGE_TAGGED} .
     # Push container images to registry
     - docker push ${CONTAINER_IMAGE_TAGGED}
-# deploy:
-#   stage: deploy
-#   tags:
-#     - dind
-#   only:
-#     - master
-#     - main
-#   before_script:
-#     - >
-#       kubectl create secret docker-registry ${K8S_ECR_SECRET_NAME}
-#       --docker-server=${AWS_ECR_URL}
-#       --docker-username=AWS
-#       --docker-password $(aws ecr get-login-password)
-#       --dry-run=client -o yaml
-#       | kubectl apply -f -
-#   script:
-#     - envsubst < kubernetes_manifest.yml | kubectl apply -f -
-#   environment:
-#     name: staging
-#     kubernetes:
-#       namespace: ${K8S_NAMESPACE}
-
+deploy:
+  stage: deploy
+  tags:
+    - dind
+  only:
+    - master
+    - main
+  before_script:
+    - >
+      kubectl create secret docker-registry ${K8S_ECR_SECRET_NAME}
+      --docker-server=${AWS_ECR_URL}
+      --docker-username=AWS
+      --docker-password $(aws ecr get-login-password)
+      --dry-run=client -o yaml
+      | kubectl apply -f -
+  script:
+    - envsubst < kubernetes_manifest.yml | kubectl apply -f -
+  environment:
+    name: staging
+    kubernetes:
+      namespace: ${K8S_NAMESPACE}
