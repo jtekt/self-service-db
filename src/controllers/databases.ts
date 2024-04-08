@@ -1,6 +1,7 @@
 import { Context } from "hono"
 import { client } from "../db"
 import format = require("pg-format")
+import { HTTPException } from "hono/http-exception"
 
 const getUserIdByName = async (username: string) => {
   const query = `SELECT usesysid FROM pg_catalog.pg_user WHERE usename = $1;`
@@ -34,4 +35,8 @@ export const createDatabase = async (c: Context) => {
   await client.query(query)
 
   return c.json({ database, username })
+}
+
+export const deleteDatabase = async (c: Context) => {
+  throw new HTTPException(501, { message: "Not implemented" })
 }
