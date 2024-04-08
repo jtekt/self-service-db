@@ -1,6 +1,6 @@
 stages:
   - build
-  # - deploy
+  - deploy
 
 image: moreillon/ci-dind
 services:
@@ -38,6 +38,7 @@ build:
     - docker build -t ${CONTAINER_IMAGE_TAGGED} .
     # Push container images to registry
     - docker push ${CONTAINER_IMAGE_TAGGED}
+
 deploy:
   stage: deploy
   tags:
