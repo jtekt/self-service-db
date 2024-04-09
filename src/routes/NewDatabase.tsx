@@ -84,7 +84,7 @@ export default function () {
                         pattern="^[a-zA-Z0-9_]*$"
                       />
                     </FormControl>
-                    <FormDescription>Database name</FormDescription>
+                    <FormDescription>Alphanumeric</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
