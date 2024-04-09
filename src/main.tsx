@@ -41,9 +41,12 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="max-w-4xl mx-auto m-4">
+      <header className="fixed h-16 flex items-center px-4 inset-0 border-b">
+        <span className="text-2xl">Self DB</span>
+      </header>
+      <main className="max-w-4xl mx-auto mt-20">
         <RouterProvider router={router} />
-      </div>
+      </main>
     </ThemeProvider>
   </React.StrictMode>
 )
