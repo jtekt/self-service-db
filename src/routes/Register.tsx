@@ -72,9 +72,13 @@ export default function () {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="Username" {...field} />
+                    <Input
+                      placeholder="Username"
+                      {...field}
+                      pattern="^[a-zA-Z0-9_]*$"
+                    />
                   </FormControl>
-                  <FormDescription>Your username</FormDescription>
+                  <FormDescription>Alphanumeric only</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -88,7 +92,7 @@ export default function () {
                   <FormControl>
                     <Input placeholder="Password" type="password" {...field} />
                   </FormControl>
-                  <FormDescription>Your password</FormDescription>
+                  {/* <FormDescription>Your password</FormDescription> */}
                   <FormMessage />
                 </FormItem>
               )}
@@ -103,7 +107,7 @@ export default function () {
                   <FormControl>
                     <Input placeholder="Password" type="password" {...field} />
                   </FormControl>
-                  <FormDescription>Password confirm</FormDescription>
+                  {/* <FormDescription>Password confirm</FormDescription> */}
                   <FormMessage />
                 </FormItem>
               )}
