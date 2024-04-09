@@ -32,22 +32,19 @@ export default function () {
   }, [])
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Databases</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="flex justify-end">
-          <Button asChild>
-            <Link
-              className={buttonVariants({ variant: "outline" })}
-              to="/databases/new"
-            >
-              New
-            </Link>
-          </Button>
-        </div>
-
+    <>
+      <div className="flex justify-between mt-4 ">
+        <h2 className="text-4xl">Databases</h2>
+        <Button asChild>
+          <Link
+            className={buttonVariants({ variant: "outline" })}
+            to="/databases/new"
+          >
+            New
+          </Link>
+        </Button>
+      </div>
+      <div className="mt-6">
         {loading ? (
           <Loader2 className="mx-auto h-12 w-12 animate-spin" />
         ) : (
@@ -59,7 +56,7 @@ export default function () {
             ))}
           </ul>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </>
   )
 }
