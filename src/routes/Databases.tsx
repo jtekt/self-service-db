@@ -1,5 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-
 import { useEffect, useState } from "react"
 import { buttonVariants } from "@/components/ui/button"
 import { Link, useNavigate } from "react-router-dom"
