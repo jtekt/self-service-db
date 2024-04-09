@@ -1,15 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-import Cookies from "universal-cookie"
 import { useEffect, useState } from "react"
 import { buttonVariants } from "@/components/ui/button"
 import { Link, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 
 import { Loader2 } from "lucide-react"
-import { TOKEN_COOKIE_NAME } from "@/config"
-
-const { VITE_API_URL } = import.meta.env
+import axios from "axios"
 
 export default function () {
   const [loading, setLoading] = useState(false)
@@ -18,27 +15,12 @@ export default function () {
   const navigate = useNavigate()
 
   async function getData() {
-    const cookies = new Cookies()
-    const token = cookies.get(TOKEN_COOKIE_NAME)
-
-    const url = `${VITE_API_URL}/databases`
-
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    }
-
-    const options = { headers }
-
     setLoading(true)
     try {
-      const response = await fetch(url, options)
-      if (response.status === 401) {
-        cookies.remove(TOKEN_COOKIE_NAME)
-        return navigate("/login")
-      }
-      const data = await response.json()
+      const { data } = await axios.get("/databases")
       setDatabases(data.items)
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 401) return navigate("/login")
       alert("Data query failed")
     } finally {
       setLoading(false)

@@ -15,7 +15,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import Cookies from "universal-cookie"
 
 import {
   Breadcrumb,
@@ -25,9 +24,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { TOKEN_COOKIE_NAME } from "@/config"
-
-const { VITE_API_URL } = import.meta.env
+import axios from "axios"
 
 export default function () {
   const [loading, setLoading] = useState(false)
@@ -41,31 +38,13 @@ export default function () {
   const navigate = useNavigate()
 
   async function onSubmit(values: any) {
-    const url = `${VITE_API_URL}/databases`
-    const cookies = new Cookies()
-    const token = cookies.get(TOKEN_COOKIE_NAME)
-
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(values),
-    }
-
     setLoading(true)
     try {
-      const response = await fetch(url, options)
-      if (response.status === 401) {
-        cookies.remove(TOKEN_COOKIE_NAME)
-        return navigate("/login")
-      }
-
-      const data = await response.json()
+      const { data } = await axios.post("/databases", values)
 
       navigate(`/databases/${data.database}`)
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 401) return navigate("/login")
       alert(error)
     } finally {
       setLoading(false)

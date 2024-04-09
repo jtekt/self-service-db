@@ -3,13 +3,23 @@ import ReactDOM from "react-dom/client"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import "./index.css"
 import { ThemeProvider } from "@/components/theme-provider"
-
+import Cookies from "universal-cookie"
 import Root from "@/routes/Root"
 import Login from "@/routes/Login"
 import Register from "@/routes/Register"
 import Databases from "@/routes/Databases"
 import NewDatabase from "@/routes/NewDatabase"
 import Database from "@/routes/Database"
+import axios from "axios"
+import { TOKEN_COOKIE_NAME } from "@/config"
+
+const { VITE_API_URL } = import.meta.env
+axios.defaults.baseURL = VITE_API_URL
+
+// TODO: auth cookies
+const cookies = new Cookies()
+const token = cookies.get(TOKEN_COOKIE_NAME)
+if (token) axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
 
 const router = createBrowserRouter([
   {

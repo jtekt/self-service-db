@@ -1,6 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-
-import Cookies from "universal-cookie"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Loader2 } from "lucide-react"
@@ -14,9 +12,9 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { TOKEN_COOKIE_NAME } from "@/config"
+import axios from "axios"
 
-const { VITE_API_URL, VITE_DB_HOST, VITE_DB_PORT } = import.meta.env
+const { VITE_DB_HOST, VITE_DB_PORT } = import.meta.env
 
 export default function () {
   const [loading, setLoading] = useState(false)
@@ -26,27 +24,12 @@ export default function () {
   const { name } = useParams()
 
   async function getData() {
-    const cookies = new Cookies()
-    const token = cookies.get(TOKEN_COOKIE_NAME)
-
-    const url = `${VITE_API_URL}/databases/${name}`
-
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    }
-
-    const options = { headers }
-
     setLoading(true)
     try {
-      const response = await fetch(url, options)
-      if (response.status === 401) {
-        cookies.remove(TOKEN_COOKIE_NAME)
-        return navigate("/login")
-      }
-      const data = await response.json()
+      const { data } = await axios.get(`/databases/${name}`)
       setDatabase(data)
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 401) return navigate("/login")
       alert("Data query failed")
     } finally {
       setLoading(false)

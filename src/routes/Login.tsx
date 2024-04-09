@@ -16,8 +16,7 @@ import {
 import Cookies from "universal-cookie"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { TOKEN_COOKIE_NAME } from "@/config"
-
-const { VITE_API_URL } = import.meta.env
+import axios from "axios"
 
 export default function () {
   const [loggingIn, setLoggingIn] = useState(false)
@@ -32,21 +31,13 @@ export default function () {
   const navigate = useNavigate()
 
   async function onSubmit(values: any) {
-    const url = `${VITE_API_URL}/login`
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    }
-
     setLoggingIn(true)
     try {
-      const response = await fetch(url, options)
-      const { token } = await response.json()
+      const { data } = await axios.post("/login", values)
+      const { token } = data
       const cookies = new Cookies()
       cookies.set(TOKEN_COOKIE_NAME, token, { path: "/" })
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
 
       navigate("/databases")
     } catch (error) {
