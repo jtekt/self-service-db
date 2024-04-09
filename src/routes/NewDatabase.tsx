@@ -99,7 +99,11 @@ export default function () {
                   <FormItem>
                     <FormLabel>Database</FormLabel>
                     <FormControl>
-                      <Input placeholder="Name" {...field} />
+                      <Input
+                        placeholder="Name"
+                        {...field}
+                        pattern="^[a-zA-Z0-9_]*$"
+                      />
                     </FormControl>
                     <FormDescription>Database name</FormDescription>
                     <FormMessage />
