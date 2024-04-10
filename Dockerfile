@@ -10,3 +10,8 @@ FROM nginx as production-stage
 RUN mkdir /app
 COPY --from=build-stage /app/dist /app
 COPY nginx.conf /etc/nginx/nginx.conf
+
+
+# Loading environment variables at runtime
+COPY substituteEnv.sh /docker-entrypoint.d/
+RUN chmod +x /docker-entrypoint.d/substituteEnv.sh
