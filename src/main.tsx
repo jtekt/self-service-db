@@ -54,7 +54,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <header className="fixed h-16 flex items-center px-4 inset-0 border-b">
         <span className="text-2xl">Self DB</span>
       </header>
-      <main className="max-w-4xl mx-auto mt-20">
+      <main className="max-w-4xl mx-auto mt-20 px-4">
         <RouterProvider router={router} />
       </main>
     </ThemeProvider>
