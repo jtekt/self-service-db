@@ -5,4 +5,5 @@ export const {
   DB_PASSWORD = "password",
   JWT_SECRET = "sh...",
   DB_USE_SSL,
+  DB_INSECURE,
 } = process.env
