@@ -14,11 +14,9 @@ import {
 import { useRouter, useParams } from "next/navigation"
 import axios from "axios"
 import Cookies from "universal-cookie"
-import {
-  NEXT_PUBLIC_DB_HOST,
-  NEXT_PUBLIC_DB_PORT,
-  TOKEN_COOKIE_NAME,
-} from "@/config"
+import { TOKEN_COOKIE_NAME } from "@/config"
+
+const { NEXT_PUBLIC_DB_HOST, NEXT_PUBLIC_DB_PORT } = process.env
 
 export default function () {
   const [loading, setLoading] = useState(false)
@@ -71,7 +69,7 @@ export default function () {
                     </BreadcrumbItem>
                   </BreadcrumbList>
                 </Breadcrumb>
-                <div className="flex justify-between mt-4 ">
+                <div className="flex justify-between my-4 ">
                   <h2 className="text-4xl">
                     {database ? database.db : "Database"}
                   </h2>

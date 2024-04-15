@@ -1,6 +1,6 @@
 import { pool } from "@/db"
 import { NextResponse } from "next/server"
-import { NEXT_PUBLIC_DB_HOST, NEXT_PUBLIC_DB_PORT } from "@/config"
+import { DB_HOST, DB_PORT } from "@/config"
 import { getUserIdByName } from "@/app/lib/actions"
 import format from "pg-format"
 
@@ -30,7 +30,7 @@ export async function GET(request: Request, context: { params: Params }) {
   const [db] = await getDbOfUser(userId, name)
 
   return NextResponse.json(
-    { username, db, host: NEXT_PUBLIC_DB_HOST, port: NEXT_PUBLIC_DB_PORT },
+    { username, db, host: DB_HOST, port: DB_PORT },
     { status: 200 }
   )
 }
@@ -59,7 +59,7 @@ export async function DELETE(request: Request, context: { params: Params }) {
   await pool.query(query)
 
   return NextResponse.json(
-    { username, db, host: NEXT_PUBLIC_DB_HOST, port: NEXT_PUBLIC_DB_PORT },
+    { username, db, host: DB_HOST, port: DB_PORT },
     { status: 200 }
   )
 }
