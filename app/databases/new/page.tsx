@@ -50,8 +50,8 @@ export default function () {
 
       router.push(`/databases/${data.database}`)
     } catch (error: any) {
-      if (error.response.status === 401) return router.push("/login")
-      alert(error)
+      const message = error.response?.data?.message || "DB creation failed"
+      alert(message)
     } finally {
       setLoading(false)
     }

@@ -16,9 +16,17 @@ export async function POST(request: Request) {
   const { username } = JSON.parse(xUserHeader)
   const { database } = await request.json()
 
-  const query = format(`CREATE DATABASE %I WITH OWNER %s`, database, username)
+  const query = format(
+    `CREATE DATABASE IF NOT EXISTS %I WITH OWNER %s`,
+    database,
+    username
+  )
 
-  await pool.query(query)
+  try {
+    await pool.query(query)
+  } catch (error: any) {
+    NextResponse.json({ message: error.message }, { status: 400 })
+  }
 
   return NextResponse.json({ database, username }, { status: 200 })
 }
