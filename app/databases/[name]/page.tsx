@@ -33,7 +33,7 @@ export default function () {
     const headers = { Authorization: `Bearer ${token}` }
     setLoading(true)
     try {
-      const { data } = await axios.get(`/databases/${name}`, { headers })
+      const { data } = await axios.get(`/api/databases/${name}`, { headers })
       setDatabase(data)
     } catch (error: any) {
       if (error.response.status === 401) return router.push("/login")
