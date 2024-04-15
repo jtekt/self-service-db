@@ -74,7 +74,7 @@ export default function () {
                       pattern="^[a-z0-9_]*$"
                     />
                   </FormControl>
-                  <FormDescription>Alphanumeric only</FormDescription>
+                  <FormDescription>Lowercase alphanumeric only</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

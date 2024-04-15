@@ -70,47 +70,37 @@ export default function () {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <Card className="mt-4">
-        <CardHeader>
-          <CardTitle>New database</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="database"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Database</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Name"
-                        {...field}
-                        pattern="^[a-zA-Z0-9_]*$"
-                      />
-                    </FormControl>
-                    <FormDescription>Alphanumeric</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+      <h2 className="text-4xl my-4">Databases</h2>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="database"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Database</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Name"
+                    {...field}
+                    pattern="^[a-zA-Z0-9_]*$"
+                  />
+                </FormControl>
+                <FormDescription>Alphanumeric</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-              <Button
-                disabled={loading}
-                type="submit"
-                className="block mx-auto"
-              >
-                {loading ? (
-                  <Loader2 className="mx-auto h-4 w-4 animate-spin" />
-                ) : (
-                  <span>Create</span>
-                )}
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+          <Button disabled={loading} type="submit" className="block mx-auto">
+            {loading ? (
+              <Loader2 className="mx-auto h-4 w-4 animate-spin" />
+            ) : (
+              <span>Create</span>
+            )}
+          </Button>
+        </form>
+      </Form>
     </>
   )
 }

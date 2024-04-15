@@ -29,6 +29,12 @@ export async function GET(request: Request, context: { params: Params }) {
   const userId = await getUserIdByName(username)
   const [db] = await getDbOfUser(userId, name)
 
+  if (!db)
+    return NextResponse.json(
+      { message: `DB ${name} not found for user ${username}` },
+      { status: 404 }
+    )
+
   return NextResponse.json(
     { username, db, host: DB_HOST, port: DB_PORT },
     { status: 200 }
