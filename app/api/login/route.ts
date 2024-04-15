@@ -14,7 +14,11 @@ export async function POST(request: Request) {
     database: "postgres",
   })
 
-  await client.connect()
+  try {
+    await client.connect()
+  } catch (error: any) {
+    return NextResponse.json({ message: "Login failed" }, { status: 401 })
+  }
 
   const token = await createToken({ username })
 
