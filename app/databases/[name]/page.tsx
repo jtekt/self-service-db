@@ -81,11 +81,12 @@ export default function () {
                 <p>Port: {NEXT_PUBLIC_DB_PORT || database.port}</p>
                 <p>Database: {database.db}</p>
                 <p>User: {database.username}</p>
+                <p>SSL: no</p>
                 <p>
-                  Connection string:{" "}
-                  {`postgresql://${database.username}:YOUR_PASSWORD@${
-                    NEXT_PUBLIC_DB_HOST || database.host
-                  }:${NEXT_PUBLIC_DB_PORT || database.port}/${database.db}`}
+                  Connection string: postgresql://{database.username}:
+                  <span className="text-primary">YOUR_PASSWORD</span>@
+                  {NEXT_PUBLIC_DB_HOST || database.host}:
+                  {NEXT_PUBLIC_DB_PORT || database.port}/{database.db}
                 </p>
               </>
             ) : (
