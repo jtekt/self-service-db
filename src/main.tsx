@@ -16,7 +16,6 @@ import { TOKEN_COOKIE_NAME } from "@/config"
 const { VITE_API_URL } = import.meta.env
 axios.defaults.baseURL = VITE_API_URL
 
-// TODO: auth cookies
 const cookies = new Cookies()
 const token = cookies.get(TOKEN_COOKIE_NAME)
 if (token) axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
