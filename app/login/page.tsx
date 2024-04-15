@@ -1,9 +1,12 @@
+"use client"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Input } from "@/components/ui/input"
 import { Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Link, useNavigate } from "react-router-dom"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+
 import {
   Form,
   FormControl,
@@ -21,6 +24,8 @@ import axios from "axios"
 export default function () {
   const [loggingIn, setLoggingIn] = useState(false)
 
+  const router = useRouter()
+
   const form = useForm({
     defaultValues: {
       username: "",
@@ -28,18 +33,18 @@ export default function () {
     },
   })
 
-  const navigate = useNavigate()
-
   async function onSubmit(values: any) {
     setLoggingIn(true)
     try {
-      const { data } = await axios.post("/login", values)
+      const { data } = await axios.post("/api/login", values)
       const { token } = data
       const cookies = new Cookies()
       cookies.set(TOKEN_COOKIE_NAME, token, { path: "/" })
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
 
-      navigate("/databases")
+      console.log({ token })
+
+      router.push("/databases")
     } catch (error) {
       alert(error)
     } finally {
@@ -96,9 +101,8 @@ export default function () {
             </Button>
           </form>
           <p className="text-center mt-4">
-            No account? Register{" "}
-            <Link to="/register" className="font-bold text-primary">
-              {" "}
+            No account? Register
+            <Link href="/register" className="font-bold text-primary">
               here
             </Link>
           </p>

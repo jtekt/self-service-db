@@ -1,10 +1,13 @@
+"use client"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Input } from "@/components/ui/input"
 import { Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useNavigate } from "react-router-dom"
+import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import Cookies from "universal-cookie"
+import { TOKEN_COOKIE_NAME } from "@/config"
 
 import {
   Form,
@@ -35,16 +38,19 @@ export default function () {
     },
   })
 
-  const navigate = useNavigate()
+  const router = useRouter()
 
   async function onSubmit(values: any) {
     setLoading(true)
+    const cookies = new Cookies()
+    const token = cookies.get(TOKEN_COOKIE_NAME)
+    const headers = { Authorization: `Bearer ${token}` }
     try {
-      const { data } = await axios.post("/databases", values)
+      const { data } = await axios.post("/api/databases", values, { headers })
 
-      navigate(`/databases/${data.database}`)
+      router.push(`/databases/${data.database}`)
     } catch (error: any) {
-      if (error.response.status === 401) return navigate("/login")
+      if (error.response.status === 401) return router.push("/login")
       alert(error)
     } finally {
       setLoading(false)

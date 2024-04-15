@@ -16,15 +16,34 @@ spec:
         - name: ${APPLICATION_NAME}
           image: ${CONTAINER_IMAGE_TAGGED}
           ports:
-            - containerPort: 80
+            - containerPort: 3000
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${APPLICATION_NAME}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ${APPLICATION_NAME}
+  template:
+    metadata:
+      labels:
+        app: ${APPLICATION_NAME}
+    spec:
+      containers:
+        - name: ${APPLICATION_NAME}
+          image: ${CONTAINER_IMAGE_TAGGED}
+          ports:
+            - containerPort: 3000
           env:
-            - name: VITE_API_URL
-              value: http://172.16.98.151:30350
-            - name: VITE_DB_HOST
+            - name: NEXT_PUBLIC_DB_HOST
               value: "172.16.98.150"
-            - name: VITE_DB_PORT
+            - name: NEXT_PUBLIC_DB_PORT
               value: "32432"
-
+          envFrom:
+            - secretRef:
+                name: env-secret
       imagePullSecrets:
         - name: ${K8S_ECR_SECRET_NAME}
 
@@ -35,8 +54,29 @@ metadata:
   name: ${APPLICATION_NAME}
 spec:
   ports:
-    - port: 80
+    - port: 3000
       nodePort: ${K8S_NODEPORT}
   selector:
     app: ${APPLICATION_NAME}
   type: NodePort
+
+
+          envFrom:
+            - secretRef:
+                name: env-secret
+      imagePullSecrets:
+        - name: ${K8S_ECR_SECRET_NAME}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${APPLICATION_NAME}
+spec:
+  ports:
+    - port: 3000
+      nodePort: ${K8S_NODEPORT}
+  selector:
+    app: ${APPLICATION_NAME}
+  type: NodePort
+

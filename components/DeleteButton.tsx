@@ -1,12 +1,14 @@
+"use client"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
-import { useNavigate } from "react-router-dom"
-import { useParams } from "react-router-dom"
+import { useRouter, useParams } from "next/navigation"
 import { useState } from "react"
 import axios from "axios"
+import Cookies from "universal-cookie"
+import { TOKEN_COOKIE_NAME } from "@/config"
 
 export default function () {
-  const navigate = useNavigate()
+  const router = useRouter()
 
   const [loading, setLoading] = useState(false)
   const { name } = useParams()
@@ -15,12 +17,15 @@ export default function () {
     if (!confirm("Delete DB?")) return
 
     setLoading(true)
+    const cookies = new Cookies()
+    const token = cookies.get(TOKEN_COOKIE_NAME)
+    const headers = { Authorization: `Bearer ${token}` }
     try {
-      await axios.delete(`/databases/${name}`)
+      await axios.delete(`/api/databases/${name}`, { headers })
 
-      navigate("/databases")
+      router.push("/databases")
     } catch (error: any) {
-      if (error.response.status === 401) return navigate("/login")
+      if (error.response.status === 401) return router.push("/login")
       alert("Data query failed")
     } finally {
       setLoading(false)

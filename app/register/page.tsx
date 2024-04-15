@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Input } from "@/components/ui/input"
@@ -12,7 +14,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { useNavigate, Link } from "react-router-dom"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 import Cookies from "universal-cookie"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { TOKEN_COOKIE_NAME } from "@/config"
@@ -29,7 +32,7 @@ export default function () {
     },
   })
 
-  const navigate = useNavigate()
+  const router = useRouter()
 
   async function onSubmit(values: any) {
     setRegistering(true)
@@ -39,7 +42,7 @@ export default function () {
       const cookies = new Cookies()
       cookies.set(TOKEN_COOKIE_NAME, token, { path: "/" })
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
-      navigate("/databases")
+      router.push("/databases")
     } catch (error) {
       alert(error)
     } finally {
@@ -117,7 +120,7 @@ export default function () {
         </Form>
         <p className="text-center mt-4">
           Already have an account? Login{" "}
-          <Link to="/login" className="font-bold text-primary">
+          <Link href="/login" className="font-bold text-primary">
             {" "}
             here
           </Link>
