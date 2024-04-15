@@ -15,7 +15,7 @@ app.get("/", (c) =>
       host: DB_HOST,
       port: DB_PORT,
       ssl: !!DB_USE_SSL,
-      insecure: DB_INSECURE,
+      insecure: !DB_INSECURE,
     },
   })
 )
