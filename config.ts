@@ -6,5 +6,7 @@ export const {
   DB_USE_SSL,
   DB_INSECURE,
   JWT_SECRET = "sh...",
-  TOKEN_COOKIE = "self_db_token",
+  TOKEN_COOKIE_NAME = "self_db_token",
 } = process.env
+
+export const encodedJwtSecret = new TextEncoder().encode(JWT_SECRET)
