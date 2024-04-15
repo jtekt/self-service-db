@@ -17,7 +17,7 @@ export async function POST(request: Request) {
   try {
     await client.connect()
   } catch (error: any) {
-    return NextResponse.json({ message: "Login failed" }, { status: 401 })
+    return NextResponse.json({ message: error.message }, { status: 401 })
   }
 
   const token = await createToken({ username })

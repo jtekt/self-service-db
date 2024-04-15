@@ -45,8 +45,9 @@ export default function () {
       console.log({ token })
 
       router.push("/databases")
-    } catch (error) {
-      alert(error)
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Login failed"
+      alert(message)
     } finally {
       setLoggingIn(false)
     }
