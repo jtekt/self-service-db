@@ -38,9 +38,9 @@ spec:
             - containerPort: 3000
           env:
             - name: NEXT_PUBLIC_DB_HOST
-              value: "111.111.111.111"
+              value: "172.16.98.150"
             - name: NEXT_PUBLIC_DB_PORT
-              value: "1111"
+              value: "32432"
           envFrom:
             - secretRef:
                 name: env-secret
