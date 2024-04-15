@@ -101,7 +101,7 @@ export default function () {
             </Button>
           </form>
           <p className="text-center mt-4">
-            No account? Register
+            No account? Register{" "}
             <Link href="/register" className="font-bold text-primary">
               here
             </Link>

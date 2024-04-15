@@ -14,7 +14,11 @@ export async function POST(request: Request) {
     password
   )
 
-  await pool.query(query)
+  try {
+    await pool.query(query)
+  } catch (error: any) {
+    return NextResponse.json({ message: error.message }, { status: 400 })
+  }
 
   const token = await createToken({ username })
 

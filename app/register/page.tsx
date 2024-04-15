@@ -35,16 +35,19 @@ export default function () {
   const router = useRouter()
 
   async function onSubmit(values: any) {
+    if (values.password !== values.passwordConfirm)
+      return alert("Passwords do not match")
     setRegistering(true)
     try {
-      const { data } = await axios.post("/users", values)
+      const { data } = await axios.post("/api/register", values)
       const { token } = data
       const cookies = new Cookies()
       cookies.set(TOKEN_COOKIE_NAME, token, { path: "/" })
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
       router.push("/databases")
-    } catch (error) {
-      alert(error)
+    } catch (error: any) {
+      const message = error.response?.data?.message || `USer creation failed`
+      alert(message)
     } finally {
       setRegistering(false)
     }
@@ -121,7 +124,6 @@ export default function () {
         <p className="text-center mt-4">
           Already have an account? Login{" "}
           <Link href="/login" className="font-bold text-primary">
-            {" "}
             here
           </Link>
         </p>
