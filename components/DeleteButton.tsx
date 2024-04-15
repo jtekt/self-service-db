@@ -1,12 +1,12 @@
+"use client"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
-import { useNavigate } from "react-router-dom"
-import { useParams } from "react-router-dom"
+import { useRouter, useParams } from "next/navigation"
 import { useState } from "react"
 import axios from "axios"
 
 export default function () {
-  const navigate = useNavigate()
+  const router = useRouter()
 
   const [loading, setLoading] = useState(false)
   const { name } = useParams()
@@ -16,11 +16,11 @@ export default function () {
 
     setLoading(true)
     try {
-      await axios.delete(`/databases/${name}`)
+      await axios.delete(`/api/databases/${name}`)
 
-      navigate("/databases")
+      router.push("/databases")
     } catch (error: any) {
-      if (error.response.status === 401) return navigate("/login")
+      if (error.response.status === 401) return router.push("/login")
       alert("Data query failed")
     } finally {
       setLoading(false)

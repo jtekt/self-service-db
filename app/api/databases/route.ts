@@ -1,6 +1,5 @@
 import { pool } from "@/db"
 import format from "pg-format"
-import { DB_HOST, DB_PORT } from "@/config"
 import { NextResponse } from "next/server"
 
 const getUserIdByName = async (username: string) => {

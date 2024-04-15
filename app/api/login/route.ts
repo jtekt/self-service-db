@@ -1,18 +1,14 @@
 import { Client } from "pg"
 import { NextResponse } from "next/server"
-import { DB_HOST, DB_PORT, JWT_SECRET } from "@/config"
+import { NEXT_PUBLIC_DB_HOST, NEXT_PUBLIC_DB_PORT, JWT_SECRET } from "@/config"
 import { createToken } from "@/app/lib/actions"
-type Credentials = {
-  username: string
-  password: string
-}
 
 export async function POST(request: Request) {
   const { username, password } = await request.json()
   // This client is just used for credentials verification
   const client = new Client({
-    host: DB_HOST,
-    port: Number(DB_PORT),
+    host: NEXT_PUBLIC_DB_HOST,
+    port: Number(NEXT_PUBLIC_DB_PORT),
     user: username,
     password,
     database: "postgres",

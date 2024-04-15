@@ -1,7 +1,7 @@
 import { Pool } from "pg"
 import {
-  DB_HOST,
-  DB_PORT,
+  NEXT_PUBLIC_DB_HOST,
+  NEXT_PUBLIC_DB_PORT,
   DB_USER,
   DB_PASSWORD,
   DB_USE_SSL,
@@ -9,8 +9,8 @@ import {
 } from "./config"
 
 export const pool = new Pool({
-  host: DB_HOST,
-  port: Number(DB_PORT),
+  host: NEXT_PUBLIC_DB_HOST,
+  port: Number(NEXT_PUBLIC_DB_PORT),
   user: DB_USER,
   password: DB_PASSWORD,
   max: 20,

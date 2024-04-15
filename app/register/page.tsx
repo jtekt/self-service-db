@@ -1,12 +1,10 @@
 "use client"
+
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Input } from "@/components/ui/input"
 import { Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-
 import {
   Form,
   FormControl,
@@ -16,46 +14,46 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 import Cookies from "universal-cookie"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { TOKEN_COOKIE_NAME } from "@/config"
 import axios from "axios"
 
 export default function () {
-  const [loggingIn, setLoggingIn] = useState(false)
-
-  const router = useRouter()
+  const [registering, setRegistering] = useState(false)
 
   const form = useForm({
     defaultValues: {
       username: "",
       password: "",
+      passwordConfirm: "",
     },
   })
 
+  const router = useRouter()
+
   async function onSubmit(values: any) {
-    setLoggingIn(true)
+    setRegistering(true)
     try {
-      const { data } = await axios.post("/api/login", values)
+      const { data } = await axios.post("/users", values)
       const { token } = data
       const cookies = new Cookies()
       cookies.set(TOKEN_COOKIE_NAME, token, { path: "/" })
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
-
-      console.log({ token })
-
       router.push("/databases")
     } catch (error) {
       alert(error)
     } finally {
-      setLoggingIn(false)
+      setRegistering(false)
     }
   }
 
   return (
-    <Card className="mx-auto max-w-2xl">
+    <Card className="max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle>Login</CardTitle>
+        <CardTitle>Register</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -67,9 +65,13 @@ export default function () {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="Username" {...field} />
+                    <Input
+                      placeholder="Username"
+                      {...field}
+                      pattern="^[a-z0-9_]*$"
+                    />
                   </FormControl>
-                  <FormDescription>Your username</FormDescription>
+                  <FormDescription>Alphanumeric only</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -83,30 +85,46 @@ export default function () {
                   <FormControl>
                     <Input placeholder="Password" type="password" {...field} />
                   </FormControl>
-                  <FormDescription>Your password</FormDescription>
+                  {/* <FormDescription>Your password</FormDescription> */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="passwordConfirm"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password confirm</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Password" type="password" {...field} />
+                  </FormControl>
+                  {/* <FormDescription>Password confirm</FormDescription> */}
                   <FormMessage />
                 </FormItem>
               )}
             />
             <Button
-              disabled={loggingIn}
+              disabled={registering}
               type="submit"
               className="block mx-auto"
             >
-              {loggingIn ? (
+              {registering ? (
                 <Loader2 className="mx-auto h-4 w-4 animate-spin" />
               ) : (
-                <span>Login</span>
+                <span>Register</span>
               )}
             </Button>
           </form>
-          <p className="text-center mt-4">
-            No account? Register
-            <Link href="/register" className="font-bold text-primary">
-              here
-            </Link>
-          </p>
         </Form>
+        <p className="text-center mt-4">
+          Already have an account? Login{" "}
+          <Link href="/login" className="font-bold text-primary">
+            {" "}
+            here
+          </Link>
+        </p>
       </CardContent>
     </Card>
   )
