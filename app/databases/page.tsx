@@ -55,7 +55,7 @@ export default function () {
           <ul>
             {databases.map((database: any) => (
               <li key={database} className="my-2">
-                <Link href={`/databases/${database}`}>{database}</Link>
+                <Link href={`/databases/new`}>{database}</Link>
               </li>
             ))}
           </ul>

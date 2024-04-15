@@ -1,20 +1,7 @@
 import { pool } from "@/db"
-import format from "pg-format"
 import { NextResponse } from "next/server"
 import { NEXT_PUBLIC_DB_HOST, NEXT_PUBLIC_DB_PORT } from "@/config"
-const getUserIdByName = async (username: string) => {
-  const query = `SELECT usesysid FROM pg_catalog.pg_user WHERE usename = $1;`
-
-  const res = await pool.query(query, [username])
-  const [user] = res.rows
-  return user.usesysid
-}
-const getDbsOfuser = async (userId: number) => {
-  const query = `SELECT datname FROM pg_catalog.pg_database WHERE pg_catalog.pg_database.datdba = $1;`
-
-  const res = await pool.query(query, [userId])
-  return res.rows.map(({ datname }) => datname)
-}
+import { getUserIdByName } from "@/app/lib/actions"
 
 const getDbOfUser = async (userId: number, dbName: string) => {
   const query = `SELECT datname FROM pg_catalog.pg_database WHERE pg_catalog.pg_database.datdba = $1 AND pg_catalog.pg_database.datname = $2;`

@@ -1,6 +1,6 @@
 import { Client } from "pg"
 import { NextResponse } from "next/server"
-import { NEXT_PUBLIC_DB_HOST, NEXT_PUBLIC_DB_PORT, JWT_SECRET } from "@/config"
+import { NEXT_PUBLIC_DB_HOST, NEXT_PUBLIC_DB_PORT } from "@/config"
 import { createToken } from "@/app/lib/actions"
 
 export async function POST(request: Request) {
