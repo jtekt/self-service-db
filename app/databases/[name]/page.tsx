@@ -49,45 +49,49 @@ export default function () {
 
   return (
     <>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/databases">Databases</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>
-              {database ? database.db : "Database"}
-            </BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-      <div className="flex justify-between mt-4 ">
-        <h2 className="text-4xl">{database ? database.db : "Database"}</h2>
-        <DeleteButton />
-      </div>
-
       <div className="mt-4">
         {loading ? (
           <Loader2 className="mx-auto h-12 w-12 animate-spin" />
         ) : (
-          <></>
-        )}
-        {database ? (
           <>
-            <p>Host: {NEXT_PUBLIC_DB_HOST || database.host}</p>
-            <p>Port: {NEXT_PUBLIC_DB_PORT || database.port}</p>
-            <p>Database: {database.db}</p>
-            <p>User: {database.username}</p>
-            <p>
-              Connection string:{" "}
-              {`postgresql://${database.username}:YOUR_PASSWORD@${
-                NEXT_PUBLIC_DB_HOST || database.host
-              }:${NEXT_PUBLIC_DB_PORT || database.port}/${database.db}`}
-            </p>
+            {database ? (
+              <>
+                <Breadcrumb>
+                  <BreadcrumbList>
+                    <BreadcrumbItem>
+                      <BreadcrumbLink href="/databases">
+                        Databases
+                      </BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage>
+                        {database ? database.db : "Database"}
+                      </BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </BreadcrumbList>
+                </Breadcrumb>
+                <div className="flex justify-between mt-4 ">
+                  <h2 className="text-4xl">
+                    {database ? database.db : "Database"}
+                  </h2>
+                  <DeleteButton />
+                </div>
+                <p>Host: {NEXT_PUBLIC_DB_HOST || database.host}</p>
+                <p>Port: {NEXT_PUBLIC_DB_PORT || database.port}</p>
+                <p>Database: {database.db}</p>
+                <p>User: {database.username}</p>
+                <p>
+                  Connection string:{" "}
+                  {`postgresql://${database.username}:YOUR_PASSWORD@${
+                    NEXT_PUBLIC_DB_HOST || database.host
+                  }:${NEXT_PUBLIC_DB_PORT || database.port}/${database.db}`}
+                </p>
+              </>
+            ) : (
+              <></>
+            )}
           </>
-        ) : (
-          <></>
         )}
       </div>
     </>
