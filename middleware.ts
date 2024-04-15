@@ -9,13 +9,27 @@ export async function middleware(request: NextRequest) {
 
   const authHeader = request.headers.get("Authorization")
 
-  if (!authHeader) throw new Error("Auth header not set")
+  if (!authHeader)
+    return NextResponse.json(
+      { message: `Authorization header not set` },
+      { status: 401 }
+    )
 
   const [_, token] = authHeader?.split(" ")
 
-  if (!token) return Response.redirect(new URL("/login", request.url))
-  const currentUser = (await jose.jwtVerify(token, encodedJwtSecret)).payload
-  if (!currentUser) return Response.redirect(new URL("/login", request.url))
+  if (!token)
+    return NextResponse.json({ message: `Token not found` }, { status: 401 })
+
+  let verifiedJwt: any
+  try {
+    verifiedJwt = await jose.jwtVerify(token, encodedJwtSecret)
+  } catch (error) {
+    return NextResponse.json(
+      { message: `Token verification failed` },
+      { status: 401 }
+    )
+  }
+  const currentUser = verifiedJwt.payload
 
   // Passing user data as stringified json
   // This is quite sketchy
