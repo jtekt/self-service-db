@@ -59,14 +59,6 @@ spec:
   selector:
     app: ${APPLICATION_NAME}
   type: NodePort
-
-
-          envFrom:
-            - secretRef:
-                name: env-secret
-      imagePullSecrets:
-        - name: ${K8S_ECR_SECRET_NAME}
-
 ---
 apiVersion: v1
 kind: Service
