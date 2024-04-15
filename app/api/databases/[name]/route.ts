@@ -57,7 +57,7 @@ export async function DELETE(request: Request, context: { params: Params }) {
   if (!db)
     return NextResponse.json(
       { message: `DB ${name} not found for user ${username}` },
-      { status: 400 }
+      { status: 404 }
     )
 
   const query = format(`DROP DATABASE %I`, name)
