@@ -15,10 +15,12 @@ import { useRouter, useParams } from "next/navigation"
 import axios from "axios"
 import Cookies from "universal-cookie"
 import { TOKEN_COOKIE_NAME } from "@/config"
-
-const { NEXT_PUBLIC_DB_HOST, NEXT_PUBLIC_DB_PORT } = process.env
+import { env } from "next-runtime-env"
 
 export default function () {
+  const NEXT_PUBLIC_DB_HOST = env("NEXT_PUBLIC_DB_HOST")
+  const NEXT_PUBLIC_DB_PORT = env("NEXT_PUBLIC_DB_PORT")
+
   const [loading, setLoading] = useState(false)
   const [database, setDatabase] = useState<any>()
 
