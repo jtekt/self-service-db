@@ -83,7 +83,7 @@ export default function () {
                   <Input
                     placeholder="Name"
                     {...field}
-                    pattern="^[a-zA-Z0-9_]*$"
+                    pattern="^[a-zA-Z0-9-_]*$"
                   />
                 </FormControl>
                 <FormDescription>Alphanumeric</FormDescription>
