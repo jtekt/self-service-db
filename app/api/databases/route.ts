@@ -21,18 +21,14 @@ export async function POST(request: Request) {
   const { username } = JSON.parse(xUserHeader)
   const { database } = await request.json()
 
-  // const dbExists = await checkIfDbExists(database)
-  // if (dbExists)
-  //   return NextResponse.json(
-  //     { message: `DB ${database} already exists` },
-  //     { status: 400 }
-  //   )
+  const dbExists = await checkIfDbExists(database)
+  if (dbExists)
+    return NextResponse.json(
+      { message: `DB ${database} already exists` },
+      { status: 400 }
+    )
 
-  const query = format(
-    `CREATE DATABASE IF NOT EXISTS %I WITH OWNER %s`,
-    database,
-    username
-  )
+  const query = format(`CREATE DATABASE %I WITH OWNER %s`, database, username)
 
   try {
     await pool.query(query)
