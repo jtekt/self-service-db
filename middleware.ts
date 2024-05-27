@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { encodedJwtSecret } from "@/config"
+import { encodedJwtSecret, TOKEN_COOKIE_NAME } from "@/config"
 import * as jose from "jose"
 
 export async function middleware(request: NextRequest) {
@@ -7,15 +7,12 @@ export async function middleware(request: NextRequest) {
   const anonymousRoutes = ["/login", "/register"]
   if (anonymousRoutes.includes(request.nextUrl.pathname)) return
 
+  let token: string | undefined = undefined
+
   const authHeader = request.headers.get("Authorization")
 
-  if (!authHeader)
-    return NextResponse.json(
-      { message: `Authorization header not set` },
-      { status: 401 }
-    )
-
-  const [_, token] = authHeader?.split(" ")
+  if (authHeader) token = authHeader?.split(" ")[1]
+  if (!token) token = request.cookies.get(TOKEN_COOKIE_NAME)?.value
 
   if (!token)
     return NextResponse.json({ message: `Token not found` }, { status: 401 })
@@ -44,5 +41,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: "/api/databases(.*)",
+  matcher: ["/api/databases(.*)", "/databases/new"],
 }

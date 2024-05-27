@@ -19,7 +19,8 @@ export async function POST(request: Request) {
   const xUserHeader = request.headers.get("X-User")
   if (!xUserHeader) throw "Missing X-User header"
   const { username } = JSON.parse(xUserHeader)
-  const { database } = await request.json()
+  const { database: userInput } = await request.json()
+  const database = `${username}-${userInput}`
 
   const dbExists = await checkIfDbExists(database)
   if (dbExists)
