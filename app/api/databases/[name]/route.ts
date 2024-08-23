@@ -3,13 +3,7 @@ import { NextResponse } from "next/server"
 import { DB_HOST, DB_PORT } from "@/config"
 import { getUserIdByName } from "@/app/lib/actions"
 import format from "pg-format"
-
-const getDbOfUser = async (userId: number, dbName: string) => {
-  const query = `SELECT datname FROM pg_catalog.pg_database WHERE pg_catalog.pg_database.datdba = $1 AND pg_catalog.pg_database.datname = $2;`
-
-  const res = await pool.query(query, [userId, dbName] as any)
-  return res.rows.map(({ datname }) => datname)
-}
+import { getDbOfUser } from "@/app/lib/databases"
 
 type Params = {
   name: string

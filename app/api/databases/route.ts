@@ -1,19 +1,8 @@
 import { pool } from "@/db"
 import { NextResponse } from "next/server"
 import { getUserIdByName } from "@/app/lib/actions"
+import { checkIfDbExists, getDbsOfuser } from "@/app/lib/databases"
 import format from "pg-format"
-
-const getDbsOfuser = async (userId: number) => {
-  const query = `SELECT datname FROM pg_catalog.pg_database WHERE pg_catalog.pg_database.datdba = $1;`
-  const res = await pool.query(query, [userId])
-  return res.rows.map(({ datname }) => datname)
-}
-
-async function checkIfDbExists(database: string) {
-  const query = `SELECT 1 FROM pg_catalog.pg_database WHERE pg_catalog.pg_database.datname = $1`
-  const { rows } = await pool.query(query, [database])
-  return !!rows.length
-}
 
 export async function POST(request: Request) {
   const xUserHeader = request.headers.get("X-User")
