@@ -1,27 +1,34 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Loader2 } from "lucide-react"
-import { useRouter, useParams } from "next/navigation"
-import { useState } from "react"
-import axios from "axios"
-import Cookies from "universal-cookie"
-import { TOKEN_COOKIE_NAME } from "@/config"
+
 import { deleteDbAction } from "@/app/actions/databases"
+import { useState } from "react"
+import { SubmitButton } from "./SubmitButton"
+import { useFormState } from "react-dom"
 
 type Props = {
   name: string
 }
 
-export default function DeleteButton(props: Props) {
-  async function handleClick() {
-    if (!confirm("Delete DB?")) return
+export default function DatabaseDelete(props: Props) {
+  const [waitingForConfirm, setWaitingForComfirm] = useState(false)
 
-    await deleteDbAction(props.name)
-  }
+  const deleteDbActionWithName = deleteDbAction.bind(null, props.name)
+  const [state, formAction] = useFormState(deleteDbActionWithName, undefined)
+
   return (
-    <Button type="submit" onClick={handleClick}>
-      Delete
-    </Button>
+    <>
+      {waitingForConfirm ? (
+        <div className="inline-flex gap-2">
+          <form action={formAction}>
+            <SubmitButton text="Confirm" />
+          </form>
+          <Button onClick={() => setWaitingForComfirm(false)}>Cancel</Button>
+        </div>
+      ) : (
+        <Button onClick={() => setWaitingForComfirm(true)}>Delete</Button>
+      )}
+    </>
   )
 }

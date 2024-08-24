@@ -36,11 +36,9 @@ export const createDbAction = async (state: any, formData: FormData) => {
   const userId = await getUserIdFromSession()
   const username = await getUserNameById(userId as number)
 
-  console.log({ username, dbName })
-
   await createDb(dbName, username)
 
-  redirect("/databases")
+  redirect(`/databases/${dbName}`)
 }
 
 export const deleteDbAction = async (dbName: string) => {
