@@ -1,6 +1,6 @@
 import { pool } from "@/db"
 import { NextResponse } from "next/server"
-import { getUserIdByName } from "@/app/lib/actions"
+import { getUserIdByName } from "@/app/lib/databases"
 import { checkIfDbExists, getDbsOfuser } from "@/app/lib/databases"
 import format from "pg-format"
 

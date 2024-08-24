@@ -1,7 +1,7 @@
 import { pool } from "@/db"
 import { NextResponse } from "next/server"
 import { DB_HOST, DB_PORT } from "@/config"
-import { getUserIdByName } from "@/app/lib/actions"
+import { getUserIdByName } from "@/app/lib/databases"
 import format from "pg-format"
 import { getDbOfUser } from "@/app/lib/databases"
 
@@ -21,7 +21,7 @@ export async function GET(request: Request, context: { params: Params }) {
   const { username } = JSON.parse(xUserHeader)
 
   const userId = await getUserIdByName(username)
-  const [db] = await getDbOfUser(userId, name)
+  const db = await getDbOfUser(userId, name)
 
   if (!db)
     return NextResponse.json(
