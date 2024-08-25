@@ -1,44 +1,34 @@
 "use client"
+
 import { Button } from "@/components/ui/button"
-import { Loader2 } from "lucide-react"
-import { useRouter, useParams } from "next/navigation"
+
+import { deleteDbAction } from "@/app/actions/databases"
 import { useState } from "react"
-import axios from "axios"
-import Cookies from "universal-cookie"
-import { TOKEN_COOKIE_NAME } from "@/config"
+import { SubmitButton } from "./SubmitButton"
+import { useFormState } from "react-dom"
 
-export default function () {
-  const router = useRouter()
+type Props = {
+  name: string
+}
 
-  const [loading, setLoading] = useState(false)
-  const { name } = useParams()
+export default function DatabaseDelete(props: Props) {
+  const [waitingForConfirm, setWaitingForComfirm] = useState(false)
 
-  async function deleteDb() {
-    if (!confirm("Delete DB?")) return
-
-    setLoading(true)
-    const cookies = new Cookies()
-    const token = cookies.get(TOKEN_COOKIE_NAME)
-    const headers = { Authorization: `Bearer ${token}` }
-    try {
-      await axios.delete(`/api/databases/${name}`, { headers })
-
-      router.push("/databases")
-    } catch (error: any) {
-      if (error.response.status === 401) return router.push("/login")
-      alert("Data query failed")
-    } finally {
-      setLoading(false)
-    }
-  }
+  const deleteDbActionWithName = deleteDbAction.bind(null, props.name)
+  const [state, formAction] = useFormState(deleteDbActionWithName, undefined)
 
   return (
-    <Button disabled={loading} type="submit" onClick={deleteDb}>
-      {loading ? (
-        <Loader2 className="mx-auto h-4 w-4 animate-spin" />
+    <>
+      {waitingForConfirm ? (
+        <div className="inline-flex gap-2">
+          <form action={formAction}>
+            <SubmitButton text="Confirm" />
+          </form>
+          <Button onClick={() => setWaitingForComfirm(false)}>Cancel</Button>
+        </div>
       ) : (
-        <span>Delete</span>
+        <Button onClick={() => setWaitingForComfirm(true)}>Delete</Button>
       )}
-    </Button>
+    </>
   )
 }

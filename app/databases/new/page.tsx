@@ -1,12 +1,8 @@
 "use client"
-import { useState } from "react"
+
 import { useForm } from "react-hook-form"
 import { Input } from "@/components/ui/input"
-import { Loader2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { useRouter } from "next/navigation"
-import Cookies from "universal-cookie"
-import { TOKEN_COOKIE_NAME } from "@/config"
+import { useFormState } from "react-dom"
 
 import {
   Form,
@@ -26,35 +22,17 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import axios from "axios"
+import { SubmitButton } from "@/components/SubmitButton"
+import { createDbAction } from "@/app/actions/databases"
 
 export default function () {
-  const [loading, setLoading] = useState(false)
-
   const form = useForm({
     defaultValues: {
       database: "",
     },
   })
 
-  const router = useRouter()
-
-  async function onSubmit(values: any) {
-    setLoading(true)
-    const cookies = new Cookies()
-    const token = cookies.get(TOKEN_COOKIE_NAME)
-    const headers = { Authorization: `Bearer ${token}` }
-    try {
-      const { data } = await axios.post("/api/databases", values, { headers })
-
-      router.push(`/databases/${data.database}`)
-    } catch (error: any) {
-      const message = error.response?.data?.message || "DB creation failed"
-      alert(message)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const [state, formAction] = useFormState(createDbAction, undefined)
 
   return (
     <>
@@ -71,7 +49,7 @@ export default function () {
       </Breadcrumb>
       <h2 className="text-4xl my-4">Databases</h2>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form action={formAction} className="space-y-4">
           <FormField
             control={form.control}
             name="database"
@@ -91,13 +69,7 @@ export default function () {
             )}
           />
 
-          <Button disabled={loading} type="submit" className="block mx-auto">
-            {loading ? (
-              <Loader2 className="mx-auto h-4 w-4 animate-spin" />
-            ) : (
-              <span>Create</span>
-            )}
-          </Button>
+          <SubmitButton text="Create" />
         </form>
       </Form>
     </>

@@ -1,12 +1,10 @@
 "use client"
-import { useState } from "react"
+// import { useActionState } from "react"
 import { useForm } from "react-hook-form"
 import { Input } from "@/components/ui/input"
-import { Loader2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
 
+import Link from "next/link"
+import { SubmitButton } from "@/components/SubmitButton"
 import {
   Form,
   FormControl,
@@ -16,15 +14,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import Cookies from "universal-cookie"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { TOKEN_COOKIE_NAME } from "@/config"
-import axios from "axios"
+
+import { useFormState } from "react-dom"
+import { loginAction } from "../actions/auth"
 
 export default function () {
-  const [loggingIn, setLoggingIn] = useState(false)
+  // Not yet working in React 18.3.1
+  // const [state, action, pending] = useActionState(handleFormSubmit, undefined)
 
-  const router = useRouter()
+  const [state, formAction] = useFormState(loginAction, undefined)
 
   const form = useForm({
     defaultValues: {
@@ -33,26 +32,6 @@ export default function () {
     },
   })
 
-  async function onSubmit(values: any) {
-    setLoggingIn(true)
-    try {
-      const { data } = await axios.post("/api/login", values)
-      const { token } = data
-      const cookies = new Cookies()
-      cookies.set(TOKEN_COOKIE_NAME, token, { path: "/" })
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
-
-      console.log({ token })
-
-      router.push("/databases")
-    } catch (error: any) {
-      const message = error.response?.data?.message || "Login failed"
-      alert(message)
-    } finally {
-      setLoggingIn(false)
-    }
-  }
-
   return (
     <Card className="mx-auto max-w-2xl">
       <CardHeader>
@@ -60,7 +39,7 @@ export default function () {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form action={formAction} className="space-y-4">
             <FormField
               control={form.control}
               name="username"
@@ -89,18 +68,13 @@ export default function () {
                 </FormItem>
               )}
             />
-            <Button
-              disabled={loggingIn}
-              type="submit"
-              className="block mx-auto"
-            >
-              {loggingIn ? (
-                <Loader2 className="mx-auto h-4 w-4 animate-spin" />
-              ) : (
-                <span>Login</span>
-              )}
-            </Button>
+            <SubmitButton text="Login" />
           </form>
+
+          <div className="text-center my-4">
+            {state?.error && <p>{state?.error}</p>}
+          </div>
+
           <p className="text-center mt-4">
             No account? Register{" "}
             <Link href="/register" className="font-bold text-primary">
