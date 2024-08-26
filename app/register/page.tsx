@@ -86,7 +86,7 @@ export default function () {
                 </FormItem>
               )}
             />
-            <SubmitButton text="Register" />
+            <SubmitButton>Register</SubmitButton>
           </form>
         </Form>
         <div className="text-center my-4">
