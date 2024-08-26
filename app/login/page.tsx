@@ -2,7 +2,7 @@
 // import { useActionState } from "react"
 import { useForm } from "react-hook-form"
 import { Input } from "@/components/ui/input"
-
+import { LogIn } from "lucide-react"
 import Link from "next/link"
 import { SubmitButton } from "@/components/SubmitButton"
 import {
@@ -17,7 +17,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 import { useFormState } from "react-dom"
-import { loginAction } from "../actions/auth"
+import { loginAction } from "../../actions/auth"
 
 export default function () {
   // Not yet working in React 18.3.1
@@ -68,7 +68,12 @@ export default function () {
                 </FormItem>
               )}
             />
-            <SubmitButton text="Login" />
+            <SubmitButton>
+              <div className="flex gap-2 items-center">
+                <LogIn />
+                <span>Login</span>
+              </div>
+            </SubmitButton>
           </form>
 
           <div className="text-center my-4">

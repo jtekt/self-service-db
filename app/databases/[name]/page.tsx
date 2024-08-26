@@ -11,7 +11,7 @@ import {
 import { useParams } from "next/navigation"
 
 import { env } from "next-runtime-env"
-import { getDatabaseCache } from "@/app/actions/databases"
+import { getDatabaseCache } from "@/actions/databases"
 
 export default async function DatabasePage({
   params,

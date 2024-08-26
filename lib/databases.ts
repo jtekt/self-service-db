@@ -1,5 +1,4 @@
 import { pool } from "@/db"
-import { headers } from "next/headers"
 import format from "pg-format"
 
 export const getUserIdByName = async (username: string) => {

@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 
-import { getUserIdFromSession } from "./app/lib/sessions"
+import { getUserIdFromSession } from "./lib/sessions"
 
 // Middleware used for authentication
 export async function middleware(request: NextRequest) {

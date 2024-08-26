@@ -1,8 +1,8 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-
-import { deleteDbAction } from "@/app/actions/databases"
+import { Check, Ban, Trash } from "lucide-react"
+import { deleteDbAction } from "@/actions/databases"
 import { useState } from "react"
 import { SubmitButton } from "./SubmitButton"
 import { useFormState } from "react-dom"
@@ -22,12 +22,18 @@ export default function DatabaseDelete(props: Props) {
       {waitingForConfirm ? (
         <div className="inline-flex gap-2">
           <form action={formAction}>
-            <SubmitButton text="Confirm" />
+            <SubmitButton>
+              <Check />
+            </SubmitButton>
           </form>
-          <Button onClick={() => setWaitingForComfirm(false)}>Cancel</Button>
+          <Button onClick={() => setWaitingForComfirm(false)}>
+            <Ban />
+          </Button>
         </div>
       ) : (
-        <Button onClick={() => setWaitingForComfirm(true)}>Delete</Button>
+        <Button onClick={() => setWaitingForComfirm(true)}>
+          <Trash />
+        </Button>
       )}
     </>
   )

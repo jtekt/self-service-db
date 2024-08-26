@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form"
 import { Input } from "@/components/ui/input"
 import { useFormState } from "react-dom"
+import { Save } from "lucide-react"
 
 import {
   Form,
@@ -23,7 +24,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { SubmitButton } from "@/components/SubmitButton"
-import { createDbAction } from "@/app/actions/databases"
+import { createDbAction } from "@/actions/databases"
 
 export default function () {
   const form = useForm({
@@ -69,9 +70,12 @@ export default function () {
             )}
           />
 
-          <SubmitButton text="Create" />
+          <SubmitButton>
+            <Save />
+          </SubmitButton>
         </form>
       </Form>
+      {state?.error && <div className="my-4 text-center">{state?.error}</div>}
     </>
   )
 }

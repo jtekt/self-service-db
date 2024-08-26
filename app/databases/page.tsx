@@ -1,7 +1,8 @@
 import { buttonVariants } from "@/components/ui/button"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { getDatabasesCache } from "../actions/databases"
+import { getDatabasesCache } from "../../actions/databases"
+import { Plus } from "lucide-react"
 
 export default async function () {
   const databases = await getDatabasesCache()
@@ -15,7 +16,7 @@ export default async function () {
             className={buttonVariants({ variant: "outline" })}
             href="/databases/new"
           >
-            New
+            <Plus />
           </Link>
         </Button>
       </div>

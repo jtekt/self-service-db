@@ -33,7 +33,13 @@ export const createDbAction = async (state: any, formData: FormData) => {
   const userId = await getUserIdFromSession()
   const username = await getUserNameById(userId as number)
 
-  await createDb(dbName, username)
+  try {
+    await createDb(dbName, username)
+  } catch (error: any) {
+    return {
+      error: error.message,
+    }
+  }
 
   redirect(`/databases/${dbName}`)
 }
@@ -42,7 +48,10 @@ export const deleteDbAction = async (dbName: string) => {
   const userId = await getUserIdFromSession()
 
   const db = await getDbOfUser(userId as number, dbName)
-  if (!db) throw new Error(`${dbName} is not a DB of user ${userId}`)
+  if (!db)
+    return {
+      error: `${dbName} is not a DB of user ${userId}`,
+    }
 
   await deleteDB(dbName)
 
