@@ -2,7 +2,6 @@
 import { cache } from "react"
 import { getUserIdFromSession } from "../lib/sessions"
 import {
-  checkIfDbExists,
   createDb,
   deleteDB,
   getDbOfUser,
@@ -10,10 +9,8 @@ import {
   getUserNameById,
 } from "../lib/databases"
 import { DB_HOST, DB_PORT } from "@/config"
-import format from "pg-format"
-import { pool } from "@/db"
+
 import { redirect } from "next/navigation"
-import { FormState } from "react-hook-form"
 
 export const getDatabasesCache = cache(async () => {
   const userId = await getUserIdFromSession()

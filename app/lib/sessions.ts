@@ -33,9 +33,7 @@ export async function createSession(userId: number) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
   const session = await encrypt({ userId, expiresAt })
 
-  cookies().set(SESSION_COOKIE_NAME, session, {
-    path: "/",
-  })
+  cookies().set(SESSION_COOKIE_NAME, session)
 }
 
 export async function getUserIdFromSession() {
