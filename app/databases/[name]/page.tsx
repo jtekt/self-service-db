@@ -21,30 +21,36 @@ export default async function DatabasePage({
   const NEXT_PUBLIC_DB_HOST = env("NEXT_PUBLIC_DB_HOST")
   const NEXT_PUBLIC_DB_PORT = env("NEXT_PUBLIC_DB_PORT")
 
-  // const router = useRouter()
-  // const { name } = useParams()
-
   const database = await getDatabaseCache(params.name)
 
-  // async function getData() {
-  //   const cookies = new Cookies()
-  //   const token = cookies.get(TOKEN_COOKIE_NAME)
-  //   const headers = { Authorization: `Bearer ${token}` }
-  //   setLoading(true)
-  //   try {
-  //     const { data } = await axios.get(`/api/databases/${name}`, { headers })
-  //     setDatabase(data)
-  //   } catch (error: any) {
-  //     if (error.response.status === 401) return router.push("/login")
-  //     alert("Data query failed")
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   getData()
-  // }, [])
+  const fields = [
+    {
+      label: "Host",
+      value: NEXT_PUBLIC_DB_HOST || database.host,
+    },
+    {
+      label: "Port",
+      value: NEXT_PUBLIC_DB_PORT || database.port,
+    },
+    {
+      label: "Database",
+      value: database.db,
+    },
+    {
+      label: "User",
+      value: database.username,
+    },
+    {
+      label: "SSL",
+      value: "No",
+    },
+    {
+      label: "Connection string",
+      value: `postgresql://${database.username}:YOUR_PASSWORD@${
+        NEXT_PUBLIC_DB_HOST || database.host
+      }:${NEXT_PUBLIC_DB_PORT || database.port}/${database.db}`,
+    },
+  ]
 
   return (
     <>
@@ -66,17 +72,19 @@ export default async function DatabasePage({
           <h2 className="text-4xl">{database ? database.db : "Database"}</h2>
           <DeleteButton name={params.name} />
         </div>
-        <p>Host: {NEXT_PUBLIC_DB_HOST || database.host}</p>
-        <p>Port: {NEXT_PUBLIC_DB_PORT || database.port}</p>
-        <p>Database: {database.db}</p>
-        <p>User: {database.username}</p>
-        <p>SSL: no</p>
-        <p>
-          Connection string: postgresql://{database.username}:
-          <span className="text-primary">YOUR_PASSWORD</span>@
-          {NEXT_PUBLIC_DB_HOST || database.host}:
-          {NEXT_PUBLIC_DB_PORT || database.port}/{database.db}
-        </p>
+
+        <dl className="divide-y divide-gray-100">
+          {fields.map((field) => (
+            <div className="px-1 py-2 grid grid-cols-4 gap-2">
+              <dt className="text-sm font-medium leading-6 text-gray-900">
+                {field.label}
+              </dt>
+              <dd className="mt-1 text-sm text-gray-700 sm:col-span-3 ">
+                {field.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </>
   )
