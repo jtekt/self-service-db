@@ -75,7 +75,7 @@ export default async function DatabasePage({
 
         <dl className="divide-y divide-gray-100">
           {fields.map((field) => (
-            <div className="px-1 py-2 grid grid-cols-4 gap-2">
+            <div className="px-1 py-2 grid grid-cols-4 gap-2" key={field.label}>
               <dt className="text-sm font-medium leading-6 text-gray-900">
                 {field.label}
               </dt>
