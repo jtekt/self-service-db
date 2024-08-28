@@ -75,7 +75,7 @@ export default async function DatabasePage({
           {fields.map((field) => (
             <div className="px-1 py-2 grid grid-cols-4 gap-2" key={field.label}>
               <dt className="text-sm font-medium leading-6">{field.label}</dt>
-              <dd className="mt-1 text-sm sm:col-span-3 ">{field.value}</dd>
+              <dd className="mt-1 text-sm col-span-3 ">{field.value}</dd>
             </div>
           ))}
         </dl>
