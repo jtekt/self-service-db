@@ -8,8 +8,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 
-import { useParams } from "next/navigation"
-
 import { env } from "next-runtime-env"
 import { getDatabaseCache } from "@/actions/databases"
 
@@ -76,12 +74,8 @@ export default async function DatabasePage({
         <dl className="divide-y divide-gray-100">
           {fields.map((field) => (
             <div className="px-1 py-2 grid grid-cols-4 gap-2" key={field.label}>
-              <dt className="text-sm font-medium leading-6 text-gray-900">
-                {field.label}
-              </dt>
-              <dd className="mt-1 text-sm text-gray-700 sm:col-span-3 ">
-                {field.value}
-              </dd>
+              <dt className="text-sm font-medium leading-6">{field.label}</dt>
+              <dd className="mt-1 text-sm sm:col-span-3 ">{field.value}</dd>
             </div>
           ))}
         </dl>
