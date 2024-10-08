@@ -5,7 +5,6 @@ import { encodedJwtSecret } from "@/config"
 import format from "pg-format"
 import { pool } from "@/db"
 
-// This might not be used anymore
 export async function createToken(data: any) {
   const token = await new jose.SignJWT(data)
     .setProtectedHeader({ alg: "HS256" })
