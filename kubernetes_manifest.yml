@@ -38,15 +38,3 @@ spec:
   selector:
     app: ${APPLICATION_NAME}
   type: NodePort
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ${APPLICATION_NAME}
-spec:
-  ports:
-    - port: 3000
-      nodePort: ${K8S_NODEPORT}
-  selector:
-    app: ${APPLICATION_NAME}
-  type: NodePort
