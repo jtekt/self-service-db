@@ -17,9 +17,9 @@ spec:
           image: ${CONTAINER_IMAGE_TAGGED}
           env:
             - name: NEXT_PUBLIC_DB_HOST
-              value: "172.16.98.150"
+              value: "172.16.98.151"
             - name: NEXT_PUBLIC_DB_PORT
-              value: "32432"
+              value: "5432"
           envFrom:
             - secretRef:
                 name: env-secret
