@@ -47,10 +47,6 @@ export const createDbAction = async (state: any, formData: FormData) => {
 export const deleteDbAction = async (dbName: string) => {
   const userId = await getUserIdFromSession();
 
-  return {
-    error: "error message",
-  };
-
   const db = await getDbOfUser(userId as number, dbName);
   if (!db)
     return {
