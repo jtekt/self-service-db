@@ -9,6 +9,8 @@ export const {
   TOKEN_COOKIE_NAME = "self_db_token",
   SESSION_COOKIE_NAME = "self_db_session",
   SESSION_SECRET = "",
-} = process.env
+  ROLE_OPTIONS = "NOSUPERUSER,CREATEDB,CREATEROLE,INHERIT",
+} = process.env;
 
-export const encodedJwtSecret = new TextEncoder().encode(JWT_SECRET)
+export const encodedJwtSecret = new TextEncoder().encode(JWT_SECRET);
+export const roleOptions = ROLE_OPTIONS.split(",").join(" ");

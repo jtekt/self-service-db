@@ -1,16 +1,16 @@
-import { Client } from "pg"
-import { DB_HOST, DB_PORT } from "@/config"
-import * as jose from "jose"
-import { encodedJwtSecret } from "@/config"
-import format from "pg-format"
-import { pool } from "@/db"
+import { Client } from "pg";
+import { DB_HOST, DB_PORT, roleOptions } from "@/config";
+import * as jose from "jose";
+import { encodedJwtSecret } from "@/config";
+import format from "pg-format";
+import { pool } from "@/db";
 
 export async function createToken(data: any) {
   const token = await new jose.SignJWT(data)
     .setProtectedHeader({ alg: "HS256" })
-    .sign(encodedJwtSecret)
+    .sign(encodedJwtSecret);
 
-  return token
+  return token;
 }
 
 export async function login(username: string, password: string) {
@@ -20,23 +20,24 @@ export async function login(username: string, password: string) {
     user: username,
     password,
     database: "postgres",
-  })
+  });
 
-  await client.connect()
+  await client.connect();
 }
 
 export async function register(username: string, password: string) {
-  if (!username) throw "Missing username"
+  if (!username) throw "Missing username";
 
   const query = format(
-    `CREATE USER %I WITH LOGIN PASSWORD '%s'`,
+    `CREATE ROLE %I WITH LOGIN PASSWORD '%s' %s;`,
     username,
-    password
-  )
+    password,
+    roleOptions
+  );
 
   try {
-    await pool.query(query)
+    await pool.query(query);
   } catch (error: any) {}
 
-  return await createToken({ username })
+  return await createToken({ username });
 }
