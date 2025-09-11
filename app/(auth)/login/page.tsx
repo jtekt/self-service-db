@@ -1,10 +1,10 @@
-"use client"
+"use client";
 // import { useActionState } from "react"
-import { useForm } from "react-hook-form"
-import { Input } from "@/components/ui/input"
-import { LogIn } from "lucide-react"
-import Link from "next/link"
-import { SubmitButton } from "@/components/SubmitButton"
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { LogIn } from "lucide-react";
+import Link from "next/link";
+import { SubmitButton } from "@/components/SubmitButton";
 import {
   Form,
   FormControl,
@@ -13,24 +13,24 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+} from "@/components/ui/form";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { useFormState } from "react-dom"
-import { loginAction } from "../../actions/auth"
+import { useFormState } from "react-dom";
+import { loginAction } from "../../../lib/actions/auth";
 
 export default function () {
   // Not yet working in React 18.3.1
   // const [state, action, pending] = useActionState(handleFormSubmit, undefined)
 
-  const [state, formAction] = useFormState(loginAction, undefined)
+  const [state, formAction] = useFormState(loginAction, undefined);
 
   const form = useForm({
     defaultValues: {
       username: "",
       password: "",
     },
-  })
+  });
 
   return (
     <Card className="mx-auto max-w-2xl">
@@ -89,5 +89,5 @@ export default function () {
         </Form>
       </CardContent>
     </Card>
-  )
+  );
 }

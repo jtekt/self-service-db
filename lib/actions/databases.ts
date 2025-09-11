@@ -1,13 +1,13 @@
 "use server";
 import { cache } from "react";
-import { getUserIdFromSession } from "../lib/sessions";
+import { getUserIdFromSession } from "../sessions";
 import {
   createDb,
   deleteDB,
   getDbOfUser,
   getDbsOfuser,
   getUserNameById,
-} from "../lib/databases";
+} from "../databases";
 import { DB_HOST, DB_PORT } from "@/config";
 
 import { redirect } from "next/navigation";

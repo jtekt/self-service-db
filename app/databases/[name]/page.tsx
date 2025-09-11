@@ -1,4 +1,4 @@
-import DeleteButton from "@/components/DeleteButton"
+import DeleteButton from "@/components/DeleteButton";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,20 +6,17 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
+} from "@/components/ui/breadcrumb";
 
-import { env } from "next-runtime-env"
-import { getDatabaseCache } from "@/actions/databases"
+import { env } from "next-runtime-env";
+import { getDatabaseCache } from "@/lib/actions/databases";
 
-export default async function DatabasePage({
-  params,
-}: {
-  params: { name: string }
-}) {
-  const NEXT_PUBLIC_DB_HOST = env("NEXT_PUBLIC_DB_HOST")
-  const NEXT_PUBLIC_DB_PORT = env("NEXT_PUBLIC_DB_PORT")
+type Params = { name: string };
+export default async function DatabasePage({ params }: { params: Params }) {
+  const NEXT_PUBLIC_DB_HOST = env("NEXT_PUBLIC_DB_HOST");
+  const NEXT_PUBLIC_DB_PORT = env("NEXT_PUBLIC_DB_PORT");
 
-  const database = await getDatabaseCache(params.name)
+  const database = await getDatabaseCache(params.name);
 
   const fields = [
     {
@@ -38,6 +35,7 @@ export default async function DatabasePage({
       label: "User",
       value: database.username,
     },
+    // TODO: customizable
     {
       label: "SSL",
       value: "No",
@@ -48,7 +46,7 @@ export default async function DatabasePage({
         NEXT_PUBLIC_DB_HOST || database.host
       }:${NEXT_PUBLIC_DB_PORT || database.port}/${database.db}`,
     },
-  ]
+  ];
 
   return (
     <>
@@ -81,5 +79,5 @@ export default async function DatabasePage({
         </dl>
       </div>
     </>
-  )
+  );
 }
