@@ -17,7 +17,7 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { SubmitButton } from "@/components/SubmitButton";
-import { createUserAction } from "../../lib/actions/auth";
+import { createUserAction } from "../../../lib/actions/auth";
 import { useFormState } from "react-dom";
 
 export default function () {

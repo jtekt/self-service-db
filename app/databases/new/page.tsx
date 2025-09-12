@@ -1,5 +1,3 @@
-"use client";
-
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { useFormState } from "react-dom";
@@ -25,15 +23,11 @@ import {
 } from "@/components/ui/breadcrumb";
 import { SubmitButton } from "@/components/SubmitButton";
 import { createDbAction } from "@/lib/actions/databases";
+import { DbCreateForm } from "@/components/DbCreateForm";
+import { getUsernameCache } from "@/lib/actions/user";
 
-export default function () {
-  const form = useForm({
-    defaultValues: {
-      database: "",
-    },
-  });
-
-  const [state, formAction] = useFormState(createDbAction, undefined);
+export default async function () {
+  const username = await getUsernameCache();
 
   return (
     <>
@@ -49,37 +43,7 @@ export default function () {
         </BreadcrumbList>
       </Breadcrumb>
       <h2 className="text-4xl my-4">New database</h2>
-      <Form {...form}>
-        <form action={formAction} className="space-y-4">
-          {/* TODO: display username here if enforcing database with username */}
-          <div className="flex items-center gap-2">
-            <FormField
-              control={form.control}
-              name="database"
-              render={({ field }) => (
-                <FormItem>
-                  {/* <FormLabel>Database name</FormLabel> */}
-                  <FormControl>
-                    <Input
-                      placeholder="Name"
-                      {...field}
-                      pattern="^[a-zA-Z0-9-_]*$"
-                      prefix="banana"
-                    />
-                  </FormControl>
-                  {/* <FormDescription>Alphanumeric</FormDescription> */}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <SubmitButton>
-            <Save />
-          </SubmitButton>
-        </form>
-      </Form>
-      {state?.error && <div className="my-4 text-center">{state?.error}</div>}
+      <DbCreateForm username={username} />
     </>
   );
 }

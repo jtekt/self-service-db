@@ -8,14 +8,14 @@ import { cache } from "react";
 
 // Following https://nextjs.org/docs/app/guides/authentication#stateless-sessions
 
-const encodedKey = new TextEncoder().encode(SESSION_SECRET);
-
 type SessionPayload = {
   userId: number;
   expiresAt: Date;
 };
 
 export async function encrypt(payload: SessionPayload) {
+  const encodedKey = new TextEncoder().encode(SESSION_SECRET);
+
   return new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
@@ -24,6 +24,8 @@ export async function encrypt(payload: SessionPayload) {
 }
 
 export async function decrypt(session: string | undefined = "") {
+  const encodedKey = new TextEncoder().encode(SESSION_SECRET);
+
   // TODO: let it throw an error
   try {
     const options = { algorithms: ["HS256"] };
@@ -45,15 +47,9 @@ export async function deleteSession() {
   cookies().delete(SESSION_COOKIE_NAME);
 }
 
-// Those two are not in the guide
+// This is not in the guide
 export async function getUserIdFromSession() {
   const cookie = cookies().get(SESSION_COOKIE_NAME)?.value;
   const session = await decrypt(cookie);
   return session?.userId;
 }
-
-export const getUsernameCache = cache(async () => {
-  const userId = await getUserIdFromSession();
-  if (!userId) throw new Error("No user ID");
-  return await getUserNameById(userId as number);
-});

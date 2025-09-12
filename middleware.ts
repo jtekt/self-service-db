@@ -6,9 +6,8 @@ export async function middleware(request: NextRequest) {
   const anonymousRoutes = ["/login", "/register"];
   if (anonymousRoutes.includes(request.nextUrl.pathname)) return;
 
-  // PROBLEM: Causes "⨯ Error: The edge runtime does not support Node.js 'crypto' module."
-  // const userId = await getUserIdFromSession();
-  // if (!userId) return NextResponse.redirect(new URL("/login", request.nextUrl));
+  const userId = await getUserIdFromSession();
+  if (!userId) return NextResponse.redirect(new URL("/login", request.nextUrl));
 
   return NextResponse.next();
 }
