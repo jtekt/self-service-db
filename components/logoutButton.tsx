@@ -10,7 +10,7 @@ export function LogoutButton(props: PropsWithChildren<Props>) {
   return (
     <Button
       onClick={() => logoutAction()}
-      variant="secondary"
+      variant="ghost"
       size="icon"
       className="size-8"
     >

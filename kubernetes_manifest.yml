@@ -20,6 +20,10 @@ spec:
               value: "172.16.98.151"
             - name: NEXT_PUBLIC_DB_PORT
               value: "5432"
+            - name: NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME
+              value: "yes"
+            - name: NEXT_PUBLIC_HELP_URL
+              value: "https://jtektjp.sharepoint.com/sites/ja_0090/SitePages/Self-service-DB%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9.aspx?web=1"
           envFrom:
             - secretRef:
                 name: env-secret
