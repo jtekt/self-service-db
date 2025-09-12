@@ -11,8 +11,8 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "Self DB",
-  description: "Self service databases",
+  title: "Self-service DB",
+  description: "Self-service databases",
 };
 
 export default function RootLayout({
