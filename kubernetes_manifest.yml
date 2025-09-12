@@ -26,7 +26,7 @@ spec:
               value: "https://jtektjp.sharepoint.com/sites/ja_0090/SitePages/Self-service-DB%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9.aspx?web=1"
           envFrom:
             - secretRef:
-                name: env-secret
+                name: self-service-db-env
       imagePullSecrets:
         - name: ${K8S_ECR_SECRET_NAME}
 
