@@ -37,15 +37,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex flex-col h-screen ">
-            <header className="p-4 text-2xl border-b">Self service DB</header>
-            <main className="w-full max-w-3xl mx-auto p-4 flex-grow">
-              {children}
-            </main>
-            <footer className="p-4 text-sm text-center border-t">
-              Self service DB | Maxime Moreillon | JTEKT Corporation
-            </footer>
-          </div>
+          {children}
         </ThemeProvider>
       </body>
     </html>

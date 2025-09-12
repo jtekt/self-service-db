@@ -1,14 +1,18 @@
 "use server";
 import { cache } from "react";
-import { getUserIdFromSession } from "../lib/sessions";
+import { getUserIdFromSession } from "../sessions";
 import {
   createDb,
   deleteDB,
   getDbOfUser,
   getDbsOfuser,
   getUserNameById,
-} from "../lib/databases";
-import { DB_HOST, DB_PORT } from "@/config";
+} from "../databases";
+import {
+  DB_HOST,
+  DB_PORT,
+  NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME,
+} from "@/config";
 
 import { redirect } from "next/navigation";
 
@@ -26,12 +30,16 @@ export const getDatabaseCache = cache(async (dbName: string) => {
 });
 
 export const createDbAction = async (state: any, formData: FormData) => {
-  const dbName = formData.get("database")?.toString();
+  const userProvidedDbName = formData.get("database")?.toString();
 
-  if (!dbName) return { error: "Name not provided" };
+  if (!userProvidedDbName) return { error: "Name not provided" };
 
   const userId = await getUserIdFromSession();
   const username = await getUserNameById(userId as number);
+
+  const dbName = NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME
+    ? `${username}-${userProvidedDbName}`
+    : userProvidedDbName;
 
   try {
     await createDb(dbName, username);

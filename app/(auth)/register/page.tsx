@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useForm } from "react-hook-form"
-import { Input } from "@/components/ui/input"
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
 
 import {
   Form,
@@ -11,17 +11,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import Link from "next/link"
+} from "@/components/ui/form";
+import Link from "next/link";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { SubmitButton } from "@/components/SubmitButton"
-import { createUserAction } from "../../actions/auth"
-import { useFormState } from "react-dom"
+import { SubmitButton } from "@/components/SubmitButton";
+import { createUserAction } from "../../../lib/actions/auth";
+import { useFormState } from "react-dom";
 
 export default function () {
-  const [state, formAction] = useFormState(createUserAction, undefined)
+  const [state, formAction] = useFormState(createUserAction, undefined);
 
   const form = useForm({
     defaultValues: {
@@ -29,7 +29,7 @@ export default function () {
       password: "",
       passwordConfirm: "",
     },
-  })
+  });
 
   return (
     <Card className="max-w-2xl mx-auto">
@@ -101,5 +101,5 @@ export default function () {
         </p>
       </CardContent>
     </Card>
-  )
+  );
 }

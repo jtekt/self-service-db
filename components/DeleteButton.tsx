@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Check, Ban, Trash } from "lucide-react";
-import { deleteDbAction } from "@/actions/databases";
+import { deleteDbAction } from "@/lib/actions/databases";
 import { useState } from "react";
 import { SubmitButton } from "./SubmitButton";
 import { useFormState } from "react-dom";
