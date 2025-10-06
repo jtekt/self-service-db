@@ -23,14 +23,15 @@ import { z } from "zod";
 
 type Props = { username: string };
 
+// TODO: This is not used. Is it because using Actions bypasses Zod validation?
 const formSchema = z.object({
-  database: z.string().regex(/^[a-zA-Z0-9-_]*$/, "Invalid format"),
+  database: z.string().regex(/^[a-z0-9_-]+$/, { message: "Invalid format" }),
 });
 
 export function DbCreateForm(props: PropsWithChildren<Props>) {
   const prefixWithUsername = env("NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME");
 
-  const form = useForm({
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       database: "",
@@ -42,6 +43,8 @@ export function DbCreateForm(props: PropsWithChildren<Props>) {
 
   return (
     <Form {...form}>
+      {/* TODO: figure out wether to use action or onSubmit={form.handleSubmit(onSubmit)} */}
+
       <form action={formAction} className="space-y-4">
         <FormField
           control={form.control}
@@ -53,11 +56,7 @@ export function DbCreateForm(props: PropsWithChildren<Props>) {
                 <span className="py-2 text-sm">{props.username}-</span>
               )}
               <FormControl>
-                <Input
-                  placeholder="Name"
-                  {...field}
-                  pattern="^[a-zA-Z0-9-_]*$"
-                />
+                <Input placeholder="My database" {...field} />
               </FormControl>
               {/* <FormDescription>Alphanumeric</FormDescription> */}
               <FormMessage />

@@ -15,6 +15,7 @@ import {
 } from "@/config";
 
 import { redirect } from "next/navigation";
+import z from "zod";
 
 export const getDatabasesCache = cache(async () => {
   const userId = await getUserIdFromSession();
@@ -30,9 +31,19 @@ export const getDatabaseCache = cache(async (dbName: string) => {
 });
 
 export const createDbAction = async (state: any, formData: FormData) => {
-  const userProvidedDbName = formData.get("database")?.toString();
+  // TODO: if doing validation here, then not needed in client
+  const schema = z
+    .string()
+    .min(2, "Name is too short")
+    .regex(/^[a-z0-9_-]+$/, "Invalid format");
 
-  if (!userProvidedDbName) return { error: "Name not provided" };
+  const { error, data: userProvidedDbName } = schema.safeParse(
+    formData.get("database")
+  );
+
+  if (error) return { error: error.issues.at(0)?.message };
+
+  return { error: "test error" };
 
   const userId = await getUserIdFromSession();
   const username = await getUserNameById(userId as number);
