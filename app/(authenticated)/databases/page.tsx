@@ -1,7 +1,7 @@
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { getDatabasesCache } from "../../lib/actions/databases";
+import { getDatabasesCache } from "@/lib/actions/databases";
 import { Plus } from "lucide-react";
 
 export default async function () {

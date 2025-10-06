@@ -22,6 +22,8 @@ import { env } from "next-runtime-env";
 
 type Props = { username: string };
 
+// TODO: zod validation
+
 export function DbCreateForm(props: PropsWithChildren<Props>) {
   const prefixWithUsername = env("NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME");
 
