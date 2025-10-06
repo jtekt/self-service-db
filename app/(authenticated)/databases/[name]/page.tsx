@@ -15,6 +15,7 @@ type Params = { name: string };
 export default async function DatabasePage({ params }: { params: Params }) {
   const NEXT_PUBLIC_DB_HOST = env("NEXT_PUBLIC_DB_HOST");
   const NEXT_PUBLIC_DB_PORT = env("NEXT_PUBLIC_DB_PORT");
+  const NEXT_PUBLIC_DB_SSL = env("NEXT_PUBLIC_DB_SSL");
 
   const database = await getDatabaseCache(params.name);
 
@@ -35,10 +36,9 @@ export default async function DatabasePage({ params }: { params: Params }) {
       label: "User",
       value: database.username,
     },
-    // TODO: customizable
     {
       label: "SSL",
-      value: "No",
+      value: NEXT_PUBLIC_DB_SSL ? "Yes" : "No",
     },
     {
       label: "Connection string",
