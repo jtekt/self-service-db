@@ -43,8 +43,6 @@ export const createDbAction = async (state: any, formData: FormData) => {
 
   if (error) return { error: error.issues.at(0)?.message };
 
-  return { error: "test error" };
-
   const userId = await getUserIdFromSession();
   const username = await getUserNameById(userId as number);
 
