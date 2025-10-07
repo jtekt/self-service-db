@@ -16,20 +16,51 @@ import Link from "next/link";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { SubmitButton } from "@/components/SubmitButton";
 import { createUserAction } from "../../../lib/actions/auth";
-import { useFormState } from "react-dom";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Loader2, UserPlus } from "lucide-react";
+
+const formSchema = z
+  .object({
+    username: z
+      .string()
+      .min(3, { message: "Name is too short" })
+      .regex(/^[a-z0-9_-]+$/, { message: "Invalid format" }),
+    password: z.string().min(6, { message: "" }),
+    passwordConfirm: z.string(),
+  })
+  .refine((data) => data.password === data.passwordConfirm, {
+    message: "Passwords don't match",
+    path: ["passwordConfirm"],
+  });
 
 export default function () {
-  const [state, formAction] = useFormState(createUserAction, undefined);
-
-  const form = useForm({
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
       password: "",
       passwordConfirm: "",
     },
   });
+
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState("");
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setPending(true);
+    try {
+      await createUserAction(values);
+    } catch (error: any) {
+      console.error(error);
+      setError(error.toString());
+    } finally {
+      setPending(false);
+    }
+  }
 
   return (
     <Card className="max-w-2xl mx-auto">
@@ -38,7 +69,7 @@ export default function () {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form action={formAction} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="username"
@@ -66,7 +97,7 @@ export default function () {
                   <FormControl>
                     <Input placeholder="Password" type="password" {...field} />
                   </FormControl>
-                  {/* <FormDescription>Your password</FormDescription> */}
+                  <FormDescription>Min 6 characters</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -86,11 +117,19 @@ export default function () {
                 </FormItem>
               )}
             />
-            <SubmitButton>Register</SubmitButton>
+            <div className="text-center">
+              <Button type="submit" disabled={pending}>
+                {pending ? (
+                  <Loader2 className="mx-auto animate-spin" />
+                ) : (
+                  <>Register</>
+                )}
+              </Button>
+            </div>
           </form>
         </Form>
-        <div className="text-center my-4">
-          {state?.error && <p>{state?.error}</p>}
+        <div className="text-center text-red-700 my-4">
+          {error && <p>{error}</p>}
         </div>
 
         <p className="text-center mt-4">
