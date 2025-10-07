@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import z from "zod";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   username: z.string(),
@@ -32,6 +33,7 @@ export default function () {
 
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,14 +46,13 @@ export default function () {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setPending(true);
     const { username, password } = values;
-    try {
-      await loginAction(username, password);
-    } catch (error: any) {
-      console.error(error.message);
-      setError(error.message || "Login failed");
-    } finally {
+    const { error } = await loginAction(username, password);
+    if (error) {
+      setError(error);
       setPending(false);
+      return;
     }
+    router.push("/databases");
   }
 
   return (
