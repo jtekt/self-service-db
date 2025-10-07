@@ -2,9 +2,8 @@
 // import { useActionState } from "react"
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { LogIn } from "lucide-react";
+import { Loader2, LogIn } from "lucide-react";
 import Link from "next/link";
-import { SubmitButton } from "@/components/SubmitButton";
 import {
   Form,
   FormControl,
@@ -16,21 +15,44 @@ import {
 } from "@/components/ui/form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { useFormState } from "react-dom";
-import { loginAction } from "../../../lib/actions/auth";
+import { loginAction } from "@/lib/actions/auth";
+import { Button } from "@/components/ui/button";
+import z from "zod";
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const formSchema = z.object({
+  username: z.string(),
+  password: z.string(),
+});
 
 export default function () {
   // Not yet working in React 18.3.1
   // const [state, action, pending] = useActionState(handleFormSubmit, undefined)
 
-  const [state, formAction] = useFormState(loginAction, undefined);
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState("");
 
-  const form = useForm({
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
       password: "",
     },
   });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setPending(true);
+    const { username, password } = values;
+    try {
+      await loginAction(username, password);
+    } catch (error: any) {
+      console.error(error);
+      setError(error.toString());
+    } finally {
+      setPending(false);
+    }
+  }
 
   return (
     <Card className="mx-auto max-w-2xl">
@@ -39,7 +61,7 @@ export default function () {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form action={formAction} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="username"
@@ -68,16 +90,19 @@ export default function () {
                 </FormItem>
               )}
             />
-            <SubmitButton>
-              <div className="flex gap-2 items-center">
-                <LogIn />
-                <span>Login</span>
-              </div>
-            </SubmitButton>
+            <div className="text-center">
+              <Button type="submit" disabled={pending}>
+                {pending ? (
+                  <Loader2 className="mx-auto animate-spin" />
+                ) : (
+                  <>Login</>
+                )}
+              </Button>
+            </div>
           </form>
 
-          <div className="text-center my-4">
-            {state?.error && <p>{state?.error}</p>}
+          <div className="text-center text-red-700 my-4">
+            {error && <p>{error}</p>}
           </div>
 
           <p className="text-center mt-4">
