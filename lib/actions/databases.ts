@@ -14,9 +14,6 @@ import {
   NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME,
 } from "@/config";
 
-import { redirect } from "next/navigation";
-import { error } from "console";
-
 export const getDatabasesCache = cache(async () => {
   const userId = await getUserIdFromSession();
   return await getDbsOfuser(userId as number);
