@@ -17,6 +17,7 @@ import { PropsWithChildren, useState } from "react";
 import { env } from "next-runtime-env";
 import { z } from "zod";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 
 type Props = { username: string };
 
@@ -39,17 +40,17 @@ export function DbCreateForm(props: PropsWithChildren<Props>) {
 
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   async function onSubmit({ database }: z.infer<typeof formSchema>) {
     setPending(true);
-    try {
-      await createDbAction(database);
-      // TODO: consider having router.push() here instead of redirect() in the action
-    } catch (error) {
-      setError("Database creation failed");
-    } finally {
+    const { error, db } = await createDbAction(database);
+    if (error) {
+      setError(error);
       setPending(false);
+      return;
     }
+    router.push(`/databases/${db}`);
   }
 
   return (

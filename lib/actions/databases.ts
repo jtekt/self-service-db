@@ -15,6 +15,7 @@ import {
 } from "@/config";
 
 import { redirect } from "next/navigation";
+import { error } from "console";
 
 export const getDatabasesCache = cache(async () => {
   const userId = await getUserIdFromSession();
@@ -32,16 +33,19 @@ export const getDatabaseCache = cache(async (dbName: string) => {
 export const createDbAction = async (userProvidedDbName: string) => {
   // NOTE: this is no longer an action as used by a form's action attribute
 
-  const userId = await getUserIdFromSession();
-  const username = await getUserNameById(userId as number);
+  try {
+    const userId = await getUserIdFromSession();
+    const username = await getUserNameById(userId as number);
 
-  const dbName = NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME
-    ? `${username}-${userProvidedDbName}`
-    : userProvidedDbName;
+    const dbName = NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME
+      ? `${username}-${userProvidedDbName}`
+      : userProvidedDbName;
 
-  await createDb(dbName, username);
-
-  redirect(`/databases/${dbName}`);
+    await createDb(dbName, username);
+    return { error: null, db: dbName };
+  } catch (error: any) {
+    return { error: error.message, db: null };
+  }
 };
 
 export const deleteDbAction = async (dbName: string) => {
@@ -55,11 +59,10 @@ export const deleteDbAction = async (dbName: string) => {
 
   try {
     await deleteDB(dbName);
+    return { error: null };
   } catch (error: any) {
     return {
       error: error.message,
     };
   }
-
-  redirect("/databases");
 };

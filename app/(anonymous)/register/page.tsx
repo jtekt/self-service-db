@@ -22,6 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2, UserPlus } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z
   .object({
@@ -47,19 +48,19 @@ export default function () {
     },
   });
 
+  const router = useRouter();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setPending(true);
-    try {
-      await createUserAction(values);
-    } catch (error: any) {
-      console.error(error);
-      setError(error.toString());
-    } finally {
+    const { error } = await createUserAction(values);
+    if (error) {
+      setError(error);
       setPending(false);
+      return;
     }
+    router.push("/databases");
   }
 
   return (

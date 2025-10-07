@@ -1,9 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Check, Ban, Trash } from "lucide-react";
+import { Check, Ban, Trash, Loader2 } from "lucide-react";
 import { deleteDbAction } from "@/lib/actions/databases";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 // import {
 //   AlertDialog,
 //   AlertDialogAction,
@@ -22,18 +23,20 @@ type Props = {
 export default function DatabaseDelete(props: Props) {
   const [waitingForConfirm, setWaitingForComfirm] = useState(false);
   const [pending, setPending] = useState(false);
-  // const [error, setError] = useState("");
+  // const [error, setError] = useState("")
+  const router = useRouter();
 
   async function handleClick() {
     setPending(true);
-    try {
-      await deleteDbAction(props.name);
-    } catch (error) {
-      alert("DB deletion failed");
-      // setError(error.toString())
-    } finally {
+
+    const { error } = await deleteDbAction(props.name);
+    if (error) {
+      // setError(error);
+      alert(error);
       setPending(false);
+      return;
     }
+    router.push(`/databases`);
   }
 
   return (
@@ -41,7 +44,7 @@ export default function DatabaseDelete(props: Props) {
       {waitingForConfirm ? (
         <div className="inline-flex gap-2">
           <Button onClick={() => handleClick()} disabled={pending}>
-            <Check />
+            {pending ? <Loader2 className="mx-auto animate-spin" /> : <Check />}
           </Button>
           <Button onClick={() => setWaitingForComfirm(false)}>
             <Ban />
