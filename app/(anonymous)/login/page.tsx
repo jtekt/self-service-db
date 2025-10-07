@@ -47,8 +47,8 @@ export default function () {
     try {
       await loginAction(username, password);
     } catch (error: any) {
-      console.error(error);
-      setError(error.toString());
+      console.error(error.message);
+      setError(error.message || "Login failed");
     } finally {
       setPending(false);
     }
