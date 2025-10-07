@@ -30,7 +30,6 @@ const formSchema = z.object({
 export default function () {
   // Not yet working in React 18.3.1
   // const [state, action, pending] = useActionState(handleFormSubmit, undefined)
-
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();

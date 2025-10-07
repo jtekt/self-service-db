@@ -30,7 +30,7 @@ const formSchema = z
       .string()
       .min(3, { message: "Name is too short" })
       .regex(/^[a-z0-9_-]+$/, { message: "Invalid format" }),
-    password: z.string().min(6, { message: "" }),
+    password: z.string().min(6, { message: "Password is too short" }),
     passwordConfirm: z.string(),
   })
   .refine((data) => data.password === data.passwordConfirm, {
@@ -48,6 +48,8 @@ export default function () {
     },
   });
 
+  // TODO: use useActionState. But Not available in React 18
+  // const [state, action, pending] = useActionState(handleFormSubmit, undefined)
   const router = useRouter();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
