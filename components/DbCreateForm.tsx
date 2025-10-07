@@ -35,11 +35,17 @@ export function DbCreateForm(props: PropsWithChildren<Props>) {
   });
 
   const [pending, setPending] = useState(false);
+  const [error, setError] = useState("");
 
   async function onSubmit({ database }: z.infer<typeof formSchema>) {
     setPending(true);
-    await createDbAction(database);
-    setPending(false);
+    try {
+      await createDbAction(database);
+    } catch (error) {
+      setError("Database creation failed");
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
@@ -70,6 +76,7 @@ export function DbCreateForm(props: PropsWithChildren<Props>) {
         <Button disabled={pending} type="submit" className="block mx-auto">
           {pending ? <Loader2 className="mx-auto animate-spin" /> : <Save />}
         </Button>
+        {error && <div className="text-center text-red-600">{error}</div>}
       </form>
     </Form>
   );
