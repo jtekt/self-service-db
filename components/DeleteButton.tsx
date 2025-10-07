@@ -31,6 +31,7 @@ export default function DatabaseDelete(props: Props) {
     <div>
       {waitingForConfirm ? (
         <div className="inline-flex gap-2">
+          {/* TODO: Having a form instead of asimple button is overkill */}
           <form action={formAction}>
             <SubmitButton>
               <Check />

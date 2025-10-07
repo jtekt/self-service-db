@@ -44,6 +44,7 @@ export function DbCreateForm(props: PropsWithChildren<Props>) {
     setPending(true);
     try {
       await createDbAction(database);
+      // TODO: consider having router.push() here instead of redirect() in the action
     } catch (error) {
       setError("Database creation failed");
     } finally {

@@ -39,13 +39,7 @@ export const createDbAction = async (userProvidedDbName: string) => {
     ? `${username}-${userProvidedDbName}`
     : userProvidedDbName;
 
-  try {
-    await createDb(dbName, username);
-  } catch (error: any) {
-    return {
-      error: error.message,
-    };
-  }
+  await createDb(dbName, username);
 
   redirect(`/databases/${dbName}`);
 };
