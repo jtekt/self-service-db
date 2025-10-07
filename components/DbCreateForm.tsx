@@ -21,7 +21,10 @@ import { Button } from "./ui/button";
 type Props = { username: string };
 
 const formSchema = z.object({
-  database: z.string().regex(/^[a-z0-9_-]+$/, { message: "Invalid format" }),
+  database: z
+    .string()
+    .min(3, { message: "Name is too short" })
+    .regex(/^[a-z0-9_-]+$/, { message: "Invalid format" }),
 });
 
 export function DbCreateForm(props: PropsWithChildren<Props>) {
