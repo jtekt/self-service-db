@@ -1,6 +1,6 @@
 import { Client } from "pg";
 import { DB_HOST, DB_PORT, roleOptions } from "@/config";
-import format from "pg-format";
+import { format } from "node-pg-format";
 import { pool } from "@/db";
 
 export async function login(username: string, password: string) {

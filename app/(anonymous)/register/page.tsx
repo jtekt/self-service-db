@@ -16,13 +16,12 @@ import Link from "next/link";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { createUserAction } from "../../../lib/actions/auth";
+import { createUserAction } from "@/actions/auth";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { startTransition, useActionState, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2, UserPlus } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 const formSchema = z
   .object({
@@ -48,21 +47,10 @@ export default function () {
     },
   });
 
-  // TODO: use useActionState. But Not available in React 18
-  // const [state, action, pending] = useActionState(handleFormSubmit, undefined)
-  const router = useRouter();
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState("");
+  const [state, action, pending] = useActionState(createUserAction, null);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setPending(true);
-    const { error } = await createUserAction(values);
-    if (error) {
-      setError(error);
-      setPending(false);
-      return;
-    }
-    router.push("/databases");
+    startTransition(() => action(values));
   }
 
   return (
@@ -132,7 +120,7 @@ export default function () {
           </form>
         </Form>
         <div className="text-center text-red-700 my-4">
-          {error && <p>{error}</p>}
+          {state?.error && <p>{state.error}</p>}
         </div>
 
         <p className="text-center mt-4">

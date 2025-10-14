@@ -3,8 +3,6 @@ import "server-only";
 import { cookies } from "next/headers";
 import { SignJWT, jwtVerify } from "jose";
 import { SESSION_SECRET, SESSION_COOKIE_NAME } from "@/config";
-import { getUserNameById } from "./databases";
-import { cache } from "react";
 
 // Following https://nextjs.org/docs/app/guides/authentication#stateless-sessions
 
@@ -40,16 +38,16 @@ export async function createSession(userId: number) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   const session = await encrypt({ userId, expiresAt });
 
-  cookies().set(SESSION_COOKIE_NAME, session);
+  (await cookies()).set(SESSION_COOKIE_NAME, session);
 }
 
 export async function deleteSession() {
-  cookies().delete(SESSION_COOKIE_NAME);
+  (await cookies()).delete(SESSION_COOKIE_NAME);
 }
 
 // This is not in the guide
 export async function getUserIdFromSession() {
-  const cookie = cookies().get(SESSION_COOKIE_NAME)?.value;
+  const cookie = (await cookies()).get(SESSION_COOKIE_NAME)?.value;
   const session = await decrypt(cookie);
   return session?.userId;
 }

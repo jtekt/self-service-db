@@ -9,10 +9,11 @@ import {
 } from "@/components/ui/breadcrumb";
 
 import { env } from "next-runtime-env";
-import { getDatabaseCache } from "@/lib/actions/databases";
+import { getDatabaseCache } from "@/actions/databases";
 
 type Params = { name: string };
-export default async function DatabasePage({ params }: { params: Params }) {
+export default async function DatabasePage(props: { params: Promise<Params> }) {
+  const params = await props.params;
   const NEXT_PUBLIC_DB_HOST = env("NEXT_PUBLIC_DB_HOST");
   const NEXT_PUBLIC_DB_PORT = env("NEXT_PUBLIC_DB_PORT");
   const NEXT_PUBLIC_DB_SSL = env("NEXT_PUBLIC_DB_SSL");

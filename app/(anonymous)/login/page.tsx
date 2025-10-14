@@ -15,12 +15,11 @@ import {
 } from "@/components/ui/form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { loginAction } from "@/lib/actions/auth";
+import { loginAction } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import z from "zod";
-import { useState } from "react";
+import { startTransition, useActionState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   username: z.string(),
@@ -28,12 +27,6 @@ const formSchema = z.object({
 });
 
 export default function () {
-  // TODO: use useActionState. But Not available in React 18
-  // const [state, action, pending] = useActionState(handleFormSubmit, undefined)
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState("");
-  const router = useRouter();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,16 +35,10 @@ export default function () {
     },
   });
 
+  const [state, action, pending] = useActionState(loginAction, null);
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setPending(true);
-    const { username, password } = values;
-    const { error } = await loginAction(username, password);
-    if (error) {
-      setError(error);
-      setPending(false);
-      return;
-    }
-    router.push("/databases");
+    startTransition(() => action(values));
   }
 
   return (
@@ -102,7 +89,7 @@ export default function () {
           </form>
 
           <div className="text-center text-red-700 my-4">
-            {error && <p>{error}</p>}
+            {state?.error && <p>{state.error}</p>}
           </div>
 
           <p className="text-center mt-4">
