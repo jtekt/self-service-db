@@ -1,5 +1,7 @@
+import "server-only";
+
 import { pool } from "@/db";
-import format from "pg-format";
+import { format } from "node-pg-format";
 
 export const getUserIdByName = async (username: string) => {
   const query = `SELECT usesysid FROM pg_catalog.pg_user WHERE usename = $1;`;
@@ -38,8 +40,6 @@ export const getDbOfUser = async (userId: number, dbName: string) => {
 };
 
 export const createDb = async (database: string, ownerName: string) => {
-  // TODO: database name to include username if enforcing the naming convention
-
   const dbExists = await checkIfDbExists(database);
   if (dbExists) throw new Error(`DB ${database} already exists`);
 
