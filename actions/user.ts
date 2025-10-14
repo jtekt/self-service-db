@@ -1,7 +1,7 @@
 "use server";
 import { cache } from "react";
-import { getUserIdFromSession } from "../sessions";
-import { getUserNameById } from "../databases";
+import { getUserIdFromSession } from "@/lib/sessions";
+import { getUserNameById } from "@/lib/databases";
 
 export const getUsernameCache = cache(async () => {
   const userId = await getUserIdFromSession();

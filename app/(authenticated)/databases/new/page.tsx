@@ -7,7 +7,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { DbCreateForm } from "@/components/DbCreateForm";
-import { getUsernameCache } from "@/lib/actions/user";
+import { getUsernameCache } from "@/actions/user";
 
 export default async function () {
   const username = await getUsernameCache();

@@ -1,18 +1,26 @@
 "use client";
-import { logoutAction } from "@/lib/actions/auth";
+import { logoutAction } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, startTransition, useActionState } from "react";
 import { LogOut } from "lucide-react";
 
 type Props = {};
 
 export function LogoutButton(props: PropsWithChildren<Props>) {
+  const [state, action, pending] = useActionState(logoutAction, null);
+
+  function onClick() {
+    startTransition(() => {
+      action();
+    });
+  }
   return (
     <Button
-      onClick={() => logoutAction()}
+      onClick={onClick}
       variant="ghost"
       size="icon"
       className="size-8"
+      disabled={pending}
     >
       <LogOut />
     </Button>

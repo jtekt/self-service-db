@@ -12,12 +12,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { createDbAction } from "@/lib/actions/databases";
-import { PropsWithChildren, useState } from "react";
+import { createDbAction } from "@/actions/databases";
+import {
+  PropsWithChildren,
+  startTransition,
+  useActionState,
+  useState,
+} from "react";
 import { env } from "next-runtime-env";
 import { z } from "zod";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
 
 type Props = { username: string };
 
@@ -31,6 +35,8 @@ const formSchema = z.object({
 export function DbCreateForm(props: PropsWithChildren<Props>) {
   const prefixWithUsername = env("NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME");
 
+  const [state, action, pending] = useActionState(createDbAction, null);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,19 +44,8 @@ export function DbCreateForm(props: PropsWithChildren<Props>) {
     },
   });
 
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState("");
-  const router = useRouter();
-
   async function onSubmit({ database }: z.infer<typeof formSchema>) {
-    setPending(true);
-    const { error, db } = await createDbAction(database);
-    if (error) {
-      setError(error);
-      setPending(false);
-      return;
-    }
-    router.push(`/databases/${db}`);
+    startTransition(() => action(database));
   }
 
   return (
@@ -81,7 +76,9 @@ export function DbCreateForm(props: PropsWithChildren<Props>) {
         <Button disabled={pending} type="submit" className="block mx-auto">
           {pending ? <Loader2 className="mx-auto animate-spin" /> : <Save />}
         </Button>
-        {error && <div className="text-center text-red-600">{error}</div>}
+        {state?.error && (
+          <div className="text-center text-red-600">{state.error}</div>
+        )}
       </form>
     </Form>
   );
