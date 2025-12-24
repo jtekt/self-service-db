@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ${APPLICATION_NAME}
+  name: self-db
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ${APPLICATION_NAME}
+      app: self-db
   template:
     metadata:
       labels:
-        app: ${APPLICATION_NAME}
+        app: self-db
     spec:
       containers:
-        - name: ${APPLICATION_NAME}
+        - name: self-db
           image: ${CONTAINER_IMAGE_TAGGED}
           env:
             - name: NEXT_PUBLIC_DB_HOST
@@ -27,18 +27,16 @@ spec:
           envFrom:
             - secretRef:
                 name: self-service-db-env
-      imagePullSecrets:
-        - name: ${K8S_ECR_SECRET_NAME}
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: ${APPLICATION_NAME}
+  name: self-db
 spec:
   ports:
     - port: 3000
-      nodePort: ${K8S_NODEPORT}
+      nodePort: 30351
   selector:
-    app: ${APPLICATION_NAME}
+    app: self-db
   type: NodePort
