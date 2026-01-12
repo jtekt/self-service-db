@@ -1,4 +1,4 @@
-import { Pool } from "pg"
+import { Pool } from "pg";
 import {
   DB_HOST,
   DB_PORT,
@@ -6,9 +6,9 @@ import {
   DB_PASSWORD,
   DB_USE_SSL,
   DB_INSECURE,
-} from "./config"
+} from "./config";
 
-export const pool = new Pool({
+const options = {
   host: DB_HOST,
   port: Number(DB_PORT),
   user: DB_USER,
@@ -19,4 +19,6 @@ export const pool = new Pool({
   ssl: !!DB_USE_SSL
     ? { rejectUnauthorized: DB_INSECURE ? false : undefined }
     : undefined,
-})
+};
+
+export const pool = new Pool(options);

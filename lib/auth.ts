@@ -1,5 +1,5 @@
 import { Client } from "pg";
-import { DB_HOST, DB_PORT, roleOptions } from "@/config";
+import { DB_HOST, DB_PORT, roleOptions, DB_USER } from "@/config";
 import { format } from "node-pg-format";
 import { pool } from "@/db";
 
@@ -26,4 +26,7 @@ export async function register(username: string, password: string) {
   );
 
   await pool.query(query);
+
+  // Somehow needed for RDS
+  await pool.query(format(`GRANT %s TO %s;`, username, DB_USER));
 }
