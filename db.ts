@@ -8,17 +8,21 @@ import {
   DB_INSECURE,
 } from "./config";
 
-const options = {
+export const commonOptions = {
   host: DB_HOST,
   port: Number(DB_PORT),
+  ssl: !!DB_USE_SSL
+    ? { rejectUnauthorized: DB_INSECURE ? false : undefined }
+    : undefined,
+};
+
+const options = {
+  ...commonOptions,
   user: DB_USER,
   password: DB_PASSWORD,
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
-  ssl: !!DB_USE_SSL
-    ? { rejectUnauthorized: DB_INSECURE ? false : undefined }
-    : undefined,
 };
 
 export const pool = new Pool(options);

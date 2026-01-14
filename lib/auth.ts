@@ -1,12 +1,11 @@
 import { Client } from "pg";
 import { DB_HOST, DB_PORT, roleOptions, DB_USER } from "@/config";
 import { format } from "node-pg-format";
-import { pool } from "@/db";
+import { commonOptions, pool } from "@/db";
 
 export async function login(username: string, password: string) {
   const client = new Client({
-    host: DB_HOST,
-    port: Number(DB_PORT),
+    ...commonOptions,
     user: username,
     password,
     database: "postgres",
