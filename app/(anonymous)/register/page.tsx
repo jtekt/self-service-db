@@ -28,7 +28,7 @@ const formSchema = z
     username: z
       .string()
       .min(3, { message: "Name is too short" })
-      .regex(/^[a-z0-9_-]+$/, { message: "Invalid format" }),
+      .regex(/^[a-z][a-z0-9_]*$/, { message: "Invalid format" }),
     password: z.string().min(6, { message: "Password is too short" }),
     passwordConfirm: z.string(),
   })
@@ -71,10 +71,13 @@ export default function () {
                     <Input
                       placeholder="Username"
                       {...field}
-                      pattern="^[a-z0-9_]*$"
+                      pattern="^[a-z][a-z0-9_]*$"
                     />
                   </FormControl>
-                  <FormDescription>Lowercase alphanumeric only</FormDescription>
+                  <FormDescription>
+                    Lowercase alphanumeric and underscore, must start with a
+                    letter
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
