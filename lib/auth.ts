@@ -1,10 +1,22 @@
 import { Client } from "pg";
-import { roleOptions, DB_USER, RDS_PROXY_NAME } from "@/config";
+import { roleOptions, DB_USER, RDS_PROXY_NAME, usernameRegex } from "@/config";
 import { format } from "node-pg-format";
 import { commonOptions, pool } from "@/db";
 import { registerUserInRdsProxy } from "./rds";
+import z from "zod";
 
-export async function login(username: string, password: string) {
+export type Credentials = {
+  username: string;
+  password: string;
+};
+
+export async function login(credentials: Credentials) {
+  const schema = z.object({
+    username: z.string(),
+    password: z.string(),
+  });
+
+  const { username, password } = schema.parse(credentials);
   const client = new Client({
     ...commonOptions,
     user: username,
@@ -15,9 +27,13 @@ export async function login(username: string, password: string) {
   await client.connect();
 }
 
-export async function register(username: string, password: string) {
-  if (!username) throw "Missing username";
-  if (!password) throw "Missing password";
+export async function register(credentials: Credentials) {
+  const schema = z.object({
+    username: z.string().min(6).regex(usernameRegex),
+    password: z.string(),
+  });
+
+  const { username, password } = schema.parse(credentials);
 
   if (RDS_PROXY_NAME) await registerUserInRdsProxy(username, password);
 

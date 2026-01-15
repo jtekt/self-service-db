@@ -19,16 +19,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createUserAction } from "@/actions/auth";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { startTransition, useActionState, useState } from "react";
+import { startTransition, useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2, UserPlus } from "lucide-react";
+import { usernameRegex } from "@/config";
+
+const usernameRule =
+  "Must contain only lowercase letters, numbers, or underscores and start with a letter";
 
 const formSchema = z
   .object({
     username: z
       .string()
       .min(3, { message: "Name is too short" })
-      .regex(/^[a-z][a-z0-9_]*$/, { message: "Invalid format" }),
+      .regex(usernameRegex, {
+        message: usernameRule,
+      }),
     password: z.string().min(6, { message: "Password is too short" }),
     passwordConfirm: z.string(),
   })
@@ -68,16 +74,9 @@ export default function () {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Username"
-                      {...field}
-                      pattern="^[a-z][a-z0-9_]*$"
-                    />
+                    <Input placeholder="Username" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    Lowercase alphanumeric and underscore, must start with a
-                    letter
-                  </FormDescription>
+                  <FormDescription>{usernameRule}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -91,7 +90,7 @@ export default function () {
                   <FormControl>
                     <Input placeholder="Password" type="password" {...field} />
                   </FormControl>
-                  <FormDescription>Min 6 characters</FormDescription>
+                  <FormDescription>Minimum 6 characters</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
