@@ -1,7 +1,8 @@
 import { Client } from "pg";
-import { DB_HOST, DB_PORT, roleOptions, DB_USER } from "@/config";
+import { roleOptions, DB_USER, RDS_PROXY_NAME } from "@/config";
 import { format } from "node-pg-format";
 import { commonOptions, pool } from "@/db";
+import { registerUserInRdsProxy } from "./rds";
 
 export async function login(username: string, password: string) {
   const client = new Client({
@@ -16,6 +17,9 @@ export async function login(username: string, password: string) {
 
 export async function register(username: string, password: string) {
   if (!username) throw "Missing username";
+  if (!password) throw "Missing password";
+
+  if (RDS_PROXY_NAME) await registerUserInRdsProxy(username, password);
 
   const query = format(
     `CREATE ROLE %I WITH LOGIN PASSWORD '%s' %s;`,
