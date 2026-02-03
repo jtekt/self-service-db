@@ -18,7 +18,8 @@ spec:
           resources: {}
           env:
             - name: NEXT_PUBLIC_DB_HOST
-              value: "172.16.98.151"
+              # value: 172.16.98.151
+              value: postgresql.public.higashikariya.jtektrnd.net
             - name: NEXT_PUBLIC_DB_PORT
               value: "5432"
             - name: NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME
