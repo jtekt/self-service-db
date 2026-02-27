@@ -3,18 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { Check, Ban, Trash, Loader2 } from "lucide-react";
 import { deleteDbAction } from "@/actions/databases";
-import { startTransition, useActionState, useState } from "react";
-// import {
-//   AlertDialog,
-//   AlertDialogAction,
-//   AlertDialogCancel,
-//   AlertDialogContent,
-//   AlertDialogDescription,
-//   AlertDialogFooter,
-//   AlertDialogHeader,
-//   AlertDialogTitle,
-//   AlertDialogTrigger,
-// } from "@/components/ui/alert-dialog";
+import { startTransition, useActionState, useEffect, useState } from "react";
+import { toast } from "sonner";
+
 type Props = {
   name: string;
 };
@@ -28,6 +19,13 @@ export default function DatabaseDelete(props: Props) {
   function handleClick() {
     startTransition(() => action());
   }
+
+  useEffect(() => {
+    if (state?.error)
+      toast.error(state.error, {
+        position: "top-center",
+      });
+  }, [state]);
 
   // TODO: error handling with useEffect
 
@@ -47,20 +45,6 @@ export default function DatabaseDelete(props: Props) {
           <Trash />
         </Button>
       )}
-      {/* TODO: reimplement */}
-      {/* {error && (
-        <AlertDialog defaultOpen>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Error</AlertDialogTitle>
-              <AlertDialogDescription>{error}</AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogAction>Close</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      ) } */}
     </div>
   );
 }
