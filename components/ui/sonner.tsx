@@ -24,22 +24,15 @@ const Toaster = ({ ...props }: ToasterProps) => {
         error: <OctagonXIcon className="size-4" />,
         loading: <Loader2Icon className="size-4 animate-spin" />,
       }}
-      style={
-        {
-          // "--normal-bg": "var(--popover)",
-          "--normal-text": "var(--popover-foreground)",
-          "--normal-border": "var(--border)",
-          "--border-radius": "var(--radius)",
-          "--normal-bg":
-            theme === "system"
-              ? window.matchMedia("(prefers-color-scheme: dark)").matches
-                ? "black"
-                : "white"
-              : theme === "dark"
-                ? "black"
-                : "white",
-        } as React.CSSProperties
-      }
+      // style={
+      //   {
+      //     // "--normal-bg": "var(--popover)",
+      //     "--normal-text": "var(--popover-foreground)",
+      //     "--normal-border": "var(--border)",
+      //     "--border-radius": "var(--radius)",
+      //     // "--normal-bg": theme === "dark" ? "black" : "white",
+      //   } as React.CSSProperties
+      // }
       toastOptions={{
         classNames: {
           toast: "cn-toast",

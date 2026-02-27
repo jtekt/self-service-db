@@ -55,6 +55,7 @@ export const deleteDbAction = async (dbName: string) => {
   if (!db) return { error: `${dbName} is not a DB of user ${userId}` };
 
   try {
+    throw new Error("BANANA");
     await deleteDB(dbName);
   } catch (error: any) {
     return { error: error.message };
