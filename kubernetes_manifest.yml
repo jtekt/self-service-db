@@ -47,6 +47,14 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: self-db
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/group: Self-Service Suite
+    gethomepage.dev/name: Self-service DB
+    gethomepage.dev/description: Allows users to create databases in PostgreSQL on their own
+    gethomepage.dev/icon: https://gitlab.jtektrnd.net/uploads/-/system/project/avatar/2229/self-db.png
+    gethomepage.dev/pod-selector: app=self-db
+
 spec:
   rules:
     - host: self-service-db.higashikariya.jtektrnd.net
