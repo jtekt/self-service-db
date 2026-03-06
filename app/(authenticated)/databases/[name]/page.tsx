@@ -16,18 +16,27 @@ export default async function DatabasePage(props: { params: Promise<Params> }) {
   const params = await props.params;
   const NEXT_PUBLIC_DB_HOST = env("NEXT_PUBLIC_DB_HOST");
   const NEXT_PUBLIC_DB_PORT = env("NEXT_PUBLIC_DB_PORT");
-  const NEXT_PUBLIC_DB_SSL = env("NEXT_PUBLIC_DB_SSL");
+  const NEXT_PUBLIC_DB_SSL_MODE = env("NEXT_PUBLIC_DB_SSL_MODE") || "disable";
 
   const database = await getDatabaseCache(params.name);
+
+  const host = NEXT_PUBLIC_DB_HOST || database.host;
+  const port = NEXT_PUBLIC_DB_PORT || database.port;
+
+  const urlQueryParameters = `?sslmode=${NEXT_PUBLIC_DB_SSL_MODE}`;
+
+  const connectionString = `postgresql://${database.username}:YOUR_PASSWORD@${
+    host
+  }:${NEXT_PUBLIC_DB_PORT || database.port}/${database.db}${urlQueryParameters}`;
 
   const fields = [
     {
       label: "Host",
-      value: NEXT_PUBLIC_DB_HOST || database.host,
+      value: host,
     },
     {
       label: "Port",
-      value: NEXT_PUBLIC_DB_PORT || database.port,
+      value: port,
     },
     {
       label: "Database",
@@ -38,14 +47,12 @@ export default async function DatabasePage(props: { params: Promise<Params> }) {
       value: database.username,
     },
     {
-      label: "SSL",
-      value: NEXT_PUBLIC_DB_SSL ? "Yes" : "No",
+      label: "SSL mode",
+      value: NEXT_PUBLIC_DB_SSL_MODE,
     },
     {
       label: "Connection string",
-      value: `postgresql://${database.username}:YOUR_PASSWORD@${
-        NEXT_PUBLIC_DB_HOST || database.host
-      }:${NEXT_PUBLIC_DB_PORT || database.port}/${database.db}`,
+      value: connectionString,
     },
   ];
 
