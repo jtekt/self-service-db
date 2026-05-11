@@ -8,9 +8,11 @@ import {
 } from "@/components/ui/breadcrumb";
 import { DbCreateForm } from "@/components/DbCreateForm";
 import { getUsernameCache } from "@/actions/user";
+import { env } from "next-runtime-env";
 
 export default async function () {
   const username = await getUsernameCache();
+  const databaseCreationDisabled = env("NEXT_PUBLIC_DISABLE_DATABASE_CREATION");
 
   return (
     <>
@@ -26,7 +28,12 @@ export default async function () {
         </BreadcrumbList>
       </Breadcrumb>
       <h2 className="text-4xl my-4">New database</h2>
-      <DbCreateForm username={username} />
+
+      {databaseCreationDisabled ? (
+        <span>Database creation is disabled on this instance</span>
+      ) : (
+        <DbCreateForm username={username} />
+      )}
     </>
   );
 }

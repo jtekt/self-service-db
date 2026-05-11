@@ -13,16 +13,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Link from "next/link";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
 import { createUserAction } from "@/actions/auth";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { startTransition, useActionState } from "react";
 import { Button } from "@/components/ui/button";
-import { Loader2, UserPlus } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { usernameRegex } from "@/config";
+import { env } from "next-runtime-env";
 
 const usernameRule =
   "Must contain only lowercase letters, numbers, or underscores and start with a letter";
@@ -44,6 +43,8 @@ const formSchema = z
   });
 
 export default function () {
+  const userRegistrationDisabled = env("NEXT_PUBLIC_DISABLE_USER_REGISTRATION");
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -65,65 +66,79 @@ export default function () {
         <CardTitle>Register</CardTitle>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Username" {...field} />
-                  </FormControl>
-                  <FormDescription>{usernameRule}</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Password" type="password" {...field} />
-                  </FormControl>
-                  <FormDescription>Minimum 6 characters</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="passwordConfirm"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password confirm</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Password" type="password" {...field} />
-                  </FormControl>
-                  {/* <FormDescription>Password confirm</FormDescription> */}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="text-center">
-              <Button type="submit" disabled={pending}>
-                {pending ? (
-                  <Loader2 className="mx-auto animate-spin" />
-                ) : (
-                  <>Register</>
+        {userRegistrationDisabled ? (
+          <span>
+            User registration is disabled on this instance of Self-service DB
+          </span>
+        ) : (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Username" {...field} />
+                    </FormControl>
+                    <FormDescription>{usernameRule}</FormDescription>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </Button>
-            </div>
-          </form>
-        </Form>
-        <div className="text-center text-red-700 my-4">
-          {state?.error && <p>{state.error}</p>}
-        </div>
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Password"
+                        type="password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>Minimum 6 characters</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="passwordConfirm"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password confirm</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Password"
+                        type="password"
+                        {...field}
+                      />
+                    </FormControl>
+                    {/* <FormDescription>Password confirm</FormDescription> */}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="text-center">
+                <Button type="submit" disabled={pending}>
+                  {pending ? (
+                    <Loader2 className="mx-auto animate-spin" />
+                  ) : (
+                    <>Register</>
+                  )}
+                </Button>
+              </div>
+              <div className="text-center text-red-700 my-4">
+                {state?.error && <p>{state.error}</p>}
+              </div>
+            </form>
+          </Form>
+        )}
 
         <p className="text-center mt-4">
           Already have an account? Login{" "}
