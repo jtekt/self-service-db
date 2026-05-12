@@ -12,6 +12,7 @@ import {
   DB_HOST,
   DB_PORT,
   NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME,
+  NEXT_PUBLIC_DISABLE_DATABASE_CREATION,
 } from "@/config";
 import { redirect } from "next/navigation";
 
@@ -30,6 +31,9 @@ export const getDatabaseCache = cache(async (dbName: string) => {
 
 export const createDbAction = async (state: any, name: string) => {
   // NOTE: this is no longer an action as used by a form's action attribute
+
+  if (NEXT_PUBLIC_DISABLE_DATABASE_CREATION)
+    return { error: "This instance does not allow database creation" };
 
   let dbName: string;
   try {

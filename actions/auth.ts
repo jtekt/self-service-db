@@ -4,8 +4,12 @@ import { redirect } from "next/navigation";
 import { Credentials, login, register } from "@/lib/auth";
 import { createSession, deleteSession } from "@/lib/sessions";
 import { getUserIdByName } from "@/lib//databases";
+import { NEXT_PUBLIC_DISABLE_USER_REGISTRATION } from "@/config";
 
 export async function createUserAction(state: any, credentials: Credentials) {
+  if (NEXT_PUBLIC_DISABLE_USER_REGISTRATION)
+    return { error: "This instance does not allow user registration" };
+
   try {
     await register(credentials);
     const userId = await getUserIdByName(credentials.username);
