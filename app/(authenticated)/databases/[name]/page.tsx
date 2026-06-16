@@ -10,6 +10,8 @@ import {
 
 import { env } from "next-runtime-env";
 import { getDatabaseCache } from "@/actions/databases";
+import { Input } from "@/components/ui/input";
+import CopyToClipboardButton from "@/components/CopyToClipboardButton";
 
 type Params = { name: string };
 export default async function DatabasePage(props: { params: Promise<Params> }) {
@@ -77,11 +79,17 @@ export default async function DatabasePage(props: { params: Promise<Params> }) {
           <DeleteButton name={params.name} />
         </div>
 
-        <dl className="divide-y">
+        <dl className="">
           {fields.map((field) => (
-            <div className="px-1 py-2 grid grid-cols-4 gap-2" key={field.label}>
-              <dt className="text-sm font-medium leading-6">{field.label}</dt>
-              <dd className="mt-1 text-sm col-span-3 ">{field.value}</dd>
+            <div
+              className="px-1 py-2 grid grid-cols-4 gap-2 items-center"
+              key={field.label}
+            >
+              <dt className="text-sm font-medium leading-4">{field.label}</dt>
+              <dd className="mt-1 text-sm col-span-3 flex gap-2 items-center">
+                <Input value={field.value} readOnly />
+                <CopyToClipboardButton value={field.value} />
+              </dd>
             </div>
           ))}
         </dl>
