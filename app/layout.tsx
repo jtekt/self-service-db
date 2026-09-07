@@ -14,9 +14,6 @@ const fontSans = FontSans({
 export const metadata: Metadata = {
   title: "Self-service DB",
   description: "Self-service databases",
-  icons: {
-    icon: "/icon.png",
-  },
 };
 
 export default function RootLayout({
