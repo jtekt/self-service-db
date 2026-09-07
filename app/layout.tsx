@@ -2,9 +2,14 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ModeToggle } from "@/components/toggle-mode";
+import { HelpLink } from "@/components/HelpLink";
+import { LogoutButton } from "@/components/logoutButton";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 import { PublicEnvScript } from "next-runtime-env";
 import { Toaster } from "@/components/ui/sonner";
+import { getUserIdFromSession } from "@/lib/sessions";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -12,15 +17,17 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "Self-service DB",
+  title: "Self-Service DB",
   description: "Self-service databases",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const userId = await getUserIdFromSession();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -28,7 +35,7 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+          "flex min-h-screen flex-col bg-background font-sans antialiased",
           fontSans.variable,
         )}
       >
@@ -38,7 +45,18 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <header className="flex h-12 items-center gap-2 border-b px-4">
+            <Link href="/" className="mr-auto text-base font-semibold">
+              Self-Service DB
+            </Link>
+            <ModeToggle />
+            <HelpLink />
+            {userId != null && <LogoutButton />}
+          </header>
+          <main className="mx-auto w-full max-w-3xl flex-1 p-4">{children}</main>
+          <footer className="border-t p-4 text-center text-sm">
+            Self-Service DB | JTEKT Corporation
+          </footer>
           <Toaster />
         </ThemeProvider>
       </body>
