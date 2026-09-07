@@ -1,52 +1,51 @@
 "use client";
-// import { useActionState } from "react"
-import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { Loader2, LogIn } from "lucide-react";
+
 import Link from "next/link";
+import { startTransition, useActionState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Loader2 } from "lucide-react";
+import { env } from "next-runtime-env";
+
+import { loginAction } from "@/actions/auth";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-import { loginAction } from "@/actions/auth";
-import { Button } from "@/components/ui/button";
-import z from "zod";
-import { startTransition, useActionState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
-  username: z.string(),
-  password: z.string(),
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(1, "Password is required"),
 });
 
-export default function () {
+export default function LoginPage() {
+  const loginHint = env("NEXT_PUBLIC_LOGIN_HINT");
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-      password: "",
-    },
+    defaultValues: { username: "", password: "" },
   });
 
-  const [state, action, pending] = useActionState(loginAction, null);
+  const [state, action, pending] = useActionState(loginAction, undefined);
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof formSchema>) {
     startTransition(() => action(values));
   }
 
   return (
-    <Card className="mx-auto max-w-2xl">
+    <Card className="mx-auto max-w-md">
       <CardHeader>
         <CardTitle>Login</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-4">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -58,7 +57,6 @@ export default function () {
                   <FormControl>
                     <Input placeholder="Username" {...field} />
                   </FormControl>
-                  <FormDescription>Your username</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -70,35 +68,33 @@ export default function () {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="Password" type="password" {...field} />
+                    <Input type="password" placeholder="Password" {...field} />
                   </FormControl>
-                  <FormDescription>Your password</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="text-center">
-              <Button type="submit" disabled={pending}>
-                {pending ? (
-                  <Loader2 className="mx-auto animate-spin" />
-                ) : (
-                  <>Login</>
-                )}
-              </Button>
-            </div>
+
+            {loginHint && (
+              <p className="text-xs text-muted-foreground">{loginHint}</p>
+            )}
+
+            {state?.error && (
+              <p className="text-sm text-destructive">{state.error}</p>
+            )}
+
+            <Button type="submit" className="w-full" disabled={pending}>
+              {pending ? <Loader2 className="animate-spin" /> : "Login"}
+            </Button>
           </form>
-
-          <div className="text-center text-red-700 my-4">
-            {state?.error && <p>{state.error}</p>}
-          </div>
-
-          <p className="text-center mt-4">
-            No account? Register{" "}
-            <Link href="/register" className="font-bold text-primary">
-              here
-            </Link>
-          </p>
         </Form>
+
+        <p className="text-center text-sm">
+          No account?{" "}
+          <Link href="/register" className="font-bold text-primary">
+            Register here
+          </Link>
+        </p>
       </CardContent>
     </Card>
   );

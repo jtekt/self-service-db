@@ -1,8 +1,17 @@
 "use client";
 
+import Link from "next/link";
+import { startTransition, useActionState } from "react";
 import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Loader2 } from "lucide-react";
+import { env } from "next-runtime-env";
 
+import { createUserAction } from "@/actions/auth";
+import { usernameRegex } from "@/config";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -12,16 +21,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { createUserAction } from "@/actions/auth";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { startTransition, useActionState } from "react";
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { usernameRegex } from "@/config";
-import { env } from "next-runtime-env";
+import { Input } from "@/components/ui/input";
 
 const usernameRule =
   "Must contain only lowercase letters, numbers, or underscores and start with a letter";
@@ -31,9 +31,7 @@ const formSchema = z
     username: z
       .string()
       .min(3, { message: "Name is too short" })
-      .regex(usernameRegex, {
-        message: usernameRule,
-      }),
+      .regex(usernameRegex, { message: usernameRule }),
     password: z.string().min(6, { message: "Password is too short" }),
     passwordConfirm: z.string(),
   })
@@ -42,34 +40,30 @@ const formSchema = z
     path: ["passwordConfirm"],
   });
 
-export default function () {
-  const userRegistrationDisabled = env("NEXT_PUBLIC_DISABLE_USER_REGISTRATION");
+export default function RegisterPage() {
+  const registrationDisabled = env("NEXT_PUBLIC_DISABLE_USER_REGISTRATION");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-      password: "",
-      passwordConfirm: "",
-    },
+    defaultValues: { username: "", password: "", passwordConfirm: "" },
   });
 
-  const [state, action, pending] = useActionState(createUserAction, null);
+  const [state, action, pending] = useActionState(createUserAction, undefined);
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof formSchema>) {
     startTransition(() => action(values));
   }
 
   return (
-    <Card className="max-w-2xl mx-auto">
+    <Card className="mx-auto max-w-md">
       <CardHeader>
         <CardTitle>Register</CardTitle>
       </CardHeader>
-      <CardContent>
-        {userRegistrationDisabled ? (
-          <span>
-            User registration is disabled on this instance of Self-service DB
-          </span>
+      <CardContent className="space-y-4">
+        {registrationDisabled ? (
+          <p className="text-sm text-muted-foreground">
+            User registration is disabled on this instance.
+          </p>
         ) : (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -94,56 +88,46 @@ export default function () {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Password"
-                        type="password"
-                        {...field}
-                      />
+                      <Input type="password" placeholder="Password" {...field} />
                     </FormControl>
                     <FormDescription>Minimum 6 characters</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="passwordConfirm"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password confirm</FormLabel>
+                    <FormLabel>Confirm password</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Password"
                         type="password"
+                        placeholder="Confirm password"
                         {...field}
                       />
                     </FormControl>
-                    {/* <FormDescription>Password confirm</FormDescription> */}
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <div className="text-center">
-                <Button type="submit" disabled={pending}>
-                  {pending ? (
-                    <Loader2 className="mx-auto animate-spin" />
-                  ) : (
-                    <>Register</>
-                  )}
-                </Button>
-              </div>
-              <div className="text-center text-red-700 my-4">
-                {state?.error && <p>{state.error}</p>}
-              </div>
+
+              {state?.error && (
+                <p className="text-sm text-destructive">{state.error}</p>
+              )}
+
+              <Button type="submit" className="w-full" disabled={pending}>
+                {pending ? <Loader2 className="animate-spin" /> : "Register"}
+              </Button>
             </form>
           </Form>
         )}
 
-        <p className="text-center mt-4">
-          Already have an account? Login{" "}
+        <p className="text-center text-sm">
+          Already have an account?{" "}
           <Link href="/login" className="font-bold text-primary">
-            here
+            Login here
           </Link>
         </p>
       </CardContent>
