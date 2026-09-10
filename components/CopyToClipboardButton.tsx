@@ -18,6 +18,9 @@ export default function CopyToClipboardButton(props: Props) {
       window.isSecureContext &&
       !!navigator.clipboard;
 
+    // window/navigator are client-only, so this can't move to a useState
+    // initializer without breaking SSR.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsSupported(checkSupport);
   }, []);
 
