@@ -4,7 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/toggle-mode";
 import { HelpLink } from "@/components/HelpLink";
-import { LogoutButton } from "@/components/logoutButton";
+import { LogoutButton } from "@/components/logout-button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { PublicEnvScript } from "next-runtime-env";
