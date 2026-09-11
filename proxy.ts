@@ -1,8 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getUserIdFromSession } from "./lib/sessions";
 
-// Middleware used for authentication
-export async function middleware(request: NextRequest) {
+// Proxy (formerly middleware) used for authentication
+export async function proxy(request: NextRequest) {
   const anonymousRoutes = ["/login", "/register"];
   if (anonymousRoutes.includes(request.nextUrl.pathname)) return;
 
