@@ -1,23 +1,18 @@
 import { Button } from "@/components/ui/button";
-import { PropsWithChildren } from "react";
 import { HelpCircle } from "lucide-react";
 import { env } from "next-runtime-env";
 import Link from "next/link";
 
-type Props = {};
-
-export function HelpLink(props: PropsWithChildren<Props>) {
-  const helpUri = env("NEXT_PUBLIC_HELP_URL");
+export function HelpLink() {
+  const helpUrl = env("NEXT_PUBLIC_HELP_URL");
+  if (!helpUrl) return null;
 
   return (
-    <>
-      {helpUri && (
-        <Button variant="ghost" size="icon" className="size-8">
-          <Link href={helpUri}>
-            <HelpCircle />
-          </Link>
-        </Button>
-      )}
-    </>
+    <Link href={helpUrl} target="_blank" rel="noreferrer">
+      <Button variant="outline" size="icon">
+        <HelpCircle />
+        <span className="sr-only">Help</span>
+      </Button>
+    </Link>
   );
 }
