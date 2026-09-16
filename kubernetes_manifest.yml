@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: self-service-db
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: self-service-db
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: self-service-db
+    spec:
+      containers:
+        - name: self-service-db
+          image: ${CONTAINER_IMAGE_TAGGED}
+          env:
+            # General
+            - name: DB_HOST
+              value: pooler.postgresql
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_INSECURE
+              value: "true"
+
+            # Public values
+            - name: NEXT_PUBLIC_DB_HOST
+              value: postgresql.ssc.jtektrnd.net
+            - name: NEXT_PUBLIC_DB_PORT
+              value: "5432"
+            # - name: NEXT_PUBLIC_DB_SSL_MODE
+            #   value: "require"
+            - name: NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME
+              value: "yes"
+            - name: NEXT_PUBLIC_HELP_URL
+              value: https://jtektjp.sharepoint.com/sites/ja_0090/SitePages/Self-service-DB%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9.aspx?web=1
+
+          envFrom:
+            - secretRef:
+                name: self-service-db-es
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "10m"
+            limits:
+              memory: "500Mi"
+              cpu: "300m"
+      imagePullSecrets:
+        - name: ecr-credentials
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: self-service-db
+spec:
+  ports:
+    - port: 3000
+  selector:
+    app.kubernetes.io/name: self-service-db
+  type: ClusterIP
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: self-service-db
+spec:
+  refreshInterval: 1h0m0s
+  secretStoreRef:
+    name: aws-secrets-manager
+    kind: ClusterSecretStore
+  dataFrom:
+    - extract:
+        key: ssc/eso/self-service-db-cnpg
+  target:
+    name: self-service-db-es
+    creationPolicy: Orphan
