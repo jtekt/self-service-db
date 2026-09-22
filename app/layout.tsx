@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/toggle-mode";
 import { HelpLink } from "@/components/HelpLink";
+import { AppsLink } from "@/components/AppsLink";
 import { LogoutButton } from "@/components/logout-button";
 import { AppIcon } from "@/components/app-icon";
 import { cn } from "@/lib/utils";
@@ -55,6 +56,7 @@ export default async function RootLayout({
               Self-Service DB
             </Link>
             <ModeToggle />
+            <AppsLink />
             <HelpLink />
             {userId != null && <LogoutButton />}
           </header>

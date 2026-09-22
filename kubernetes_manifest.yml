@@ -37,6 +37,8 @@ spec:
               value: "yes"
             - name: NEXT_PUBLIC_HELP_URL
               value: https://jtektjp.sharepoint.com/sites/ja_0090/SitePages/Self-service-DB%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9.aspx?web=1
+            - name: NEXT_PUBLIC_APPS_URL
+              value: https://homepage.ssc.jtektrnd.net
 
           envFrom:
             - secretRef:
