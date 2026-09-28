@@ -5,9 +5,10 @@ import { Credentials, login, register } from "@/lib/auth";
 import { createSession, deleteSession } from "@/lib/sessions";
 import { getUserIdByName } from "@/lib//databases";
 import { NEXT_PUBLIC_DISABLE_USER_REGISTRATION } from "@/config";
+import { isEnabled } from "@/lib/utils";
 
 export async function createUserAction(state: any, credentials: Credentials) {
-  if (NEXT_PUBLIC_DISABLE_USER_REGISTRATION)
+  if (isEnabled(NEXT_PUBLIC_DISABLE_USER_REGISTRATION))
     return { error: "This instance does not allow user registration" };
 
   try {

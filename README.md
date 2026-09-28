@@ -4,7 +4,7 @@ A Next.js application which allows users to create their own databases in a Post
 
 ## Environment variables
 
-Flags marked "any non-empty value" are enabled by any non-empty string, including `false`. Leave them unset to disable.
+On/off flags are enabled by `true`, `1` or `yes` (any case). Anything else, including `false` or leaving them unset, disables them.
 
 | Variable                                 | Description                                                                 | Default                                  |
 | ---------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------- |
@@ -12,8 +12,8 @@ Flags marked "any non-empty value" are enabled by any non-empty string, includin
 | DB_PORT                                  | PostgreSQL® port                                                            | 5432                                     |
 | DB_USER                                  | Administrator username of the PostgreSQL instance                           | postgres                                 |
 | DB_PASSWORD                              | PostgreSQL® administrator password                                          | password                                 |
-| DB_USE_SSL                               | Connect to PostgreSQL using SSL (any non-empty value)                       |                                          |
-| DB_INSECURE                              | With SSL, don't verify the server certificate (any non-empty value)         |                                          |
+| DB_USE_SSL                               | Connect to PostgreSQL using SSL (on/off)                       |                                          |
+| DB_INSECURE                              | With SSL, don't verify the server certificate (on/off)         |                                          |
 | ROLE_OPTIONS                             | Comma-separated options for created roles                                   | NOSUPERUSER,CREATEDB,CREATEROLE,INHERIT  |
 | SESSION_SECRET                           | Secret used to sign the session cookie                                      |                                          |
 | SESSION_COOKIE_NAME                      | Name of the session cookie                                                  | self_db_session                          |
@@ -25,9 +25,9 @@ Flags marked "any non-empty value" are enabled by any non-empty string, includin
 | NEXT_PUBLIC_DB_HOST                      | DB host as displayed to users                                               |                                          |
 | NEXT_PUBLIC_DB_PORT                      | DB port as displayed to users                                               |                                          |
 | NEXT_PUBLIC_DB_SSL_MODE                  | DB ssl mode as displayed to users                                           | disable                                  |
-| NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME | Prefix database names with username (any non-empty value)                   |                                          |
-| NEXT_PUBLIC_DISABLE_USER_REGISTRATION    | Prevent user registration (any non-empty value)                             |                                          |
-| NEXT_PUBLIC_DISABLE_DATABASE_CREATION    | Prevent database creation (any non-empty value)                             |                                          |
+| NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME | Prefix database names with username (on/off)                   |                                          |
+| NEXT_PUBLIC_DISABLE_USER_REGISTRATION    | Prevent user registration (on/off)                             |                                          |
+| NEXT_PUBLIC_DISABLE_DATABASE_CREATION    | Prevent database creation (on/off)                             |                                          |
 | NEXT_PUBLIC_LOGIN_HINT                   | Optional hint shown on the login page                                       |                                          |
 | NEXT_PUBLIC_HELP_URL                     | Optional help link shown in the header                                      |                                          |
 | NEXT_PUBLIC_APPS_URL                     | Optional link to the apps portal shown in the header                        |                                          |

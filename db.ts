@@ -7,12 +7,13 @@ import {
   DB_USE_SSL,
   DB_INSECURE,
 } from "./config";
+import { isEnabled } from "@/lib/utils";
 
 export const commonOptions = {
   host: DB_HOST,
   port: Number(DB_PORT),
-  ssl: !!DB_USE_SSL
-    ? { rejectUnauthorized: DB_INSECURE ? false : undefined }
+  ssl: isEnabled(DB_USE_SSL)
+    ? { rejectUnauthorized: isEnabled(DB_INSECURE) ? false : undefined }
     : undefined,
 };
 

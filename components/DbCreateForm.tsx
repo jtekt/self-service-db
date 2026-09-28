@@ -20,6 +20,7 @@ import {
   useState,
 } from "react";
 import { env } from "next-runtime-env";
+import { isEnabled } from "@/lib/utils";
 import { z } from "zod";
 import { Button } from "./ui/button";
 
@@ -33,7 +34,9 @@ const formSchema = z.object({
 });
 
 export function DbCreateForm(props: PropsWithChildren<Props>) {
-  const prefixWithUsername = env("NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME");
+  const prefixWithUsername = isEnabled(
+    env("NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME"),
+  );
 
   const [state, action, pending] = useActionState(createDbAction, null);
 

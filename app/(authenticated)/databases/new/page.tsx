@@ -9,10 +9,13 @@ import {
 import { DbCreateForm } from "@/components/DbCreateForm";
 import { getUsernameCache } from "@/actions/user";
 import { env } from "next-runtime-env";
+import { isEnabled } from "@/lib/utils";
 
 export default async function () {
   const username = await getUsernameCache();
-  const databaseCreationDisabled = env("NEXT_PUBLIC_DISABLE_DATABASE_CREATION");
+  const databaseCreationDisabled = isEnabled(
+    env("NEXT_PUBLIC_DISABLE_DATABASE_CREATION"),
+  );
 
   return (
     <>

@@ -14,6 +14,7 @@ import {
   NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME,
   NEXT_PUBLIC_DISABLE_DATABASE_CREATION,
 } from "@/config";
+import { isEnabled } from "@/lib/utils";
 import { redirect } from "next/navigation";
 
 export const getDatabasesCache = cache(async () => {
@@ -32,7 +33,7 @@ export const getDatabaseCache = cache(async (dbName: string) => {
 export const createDbAction = async (state: any, name: string) => {
   // NOTE: this is no longer an action as used by a form's action attribute
 
-  if (NEXT_PUBLIC_DISABLE_DATABASE_CREATION)
+  if (isEnabled(NEXT_PUBLIC_DISABLE_DATABASE_CREATION))
     return { error: "This instance does not allow database creation" };
 
   let dbName: string;
@@ -40,7 +41,7 @@ export const createDbAction = async (state: any, name: string) => {
     const userId = await getUserIdFromSession();
     const username = await getUserNameById(userId as number);
 
-    dbName = NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME
+    dbName = isEnabled(NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME)
       ? `${username}-${name}`
       : name;
 
