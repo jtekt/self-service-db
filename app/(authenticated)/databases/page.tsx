@@ -1,34 +1,50 @@
-import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { ChevronRightIcon } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { getDatabasesCache } from "@/actions/databases";
-import { Plus } from "lucide-react";
 
-export default async function () {
+export default async function DatabasesPage() {
   const databases = await getDatabasesCache();
 
   return (
-    <>
-      <div className="flex justify-between mt-4 ">
-        <h2 className="text-4xl">Databases</h2>
-        <Button asChild>
-          <Link
-            className={buttonVariants({ variant: "outline" })}
-            href="/databases/new"
-          >
-            <Plus />
-          </Link>
-        </Button>
+    <div className="mx-auto max-w-lg space-y-6 py-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Your databases</h1>
+        <Link href="/databases/new" className={buttonVariants()}>
+          New database
+        </Link>
       </div>
-      <div className="mt-6">
-        <ul>
-          {databases.map((database: any) => (
-            <li key={database} className="my-2">
-              <Link href={`/databases/${database}`}>{database}</Link>
-            </li>
+
+      {databases.length === 0 ? (
+        <p className="text-muted-foreground">
+          You haven&apos;t created any databases yet.
+        </p>
+      ) : (
+        <div className="space-y-3">
+          {databases.map((database) => (
+            <Link
+              key={database.name}
+              href={`/databases/${database.name}`}
+              className="block"
+            >
+              <Card className="rounded-xl transition-colors hover:bg-accent/50">
+                <CardContent className="flex items-center justify-between gap-4 p-6">
+                  <div className="min-w-0">
+                    <p className="truncate font-medium">{database.name}</p>
+                    {database.size && (
+                      <p className="text-sm text-muted-foreground">
+                        {database.size}
+                      </p>
+                    )}
+                  </div>
+                  <ChevronRightIcon className="size-5 shrink-0 text-muted-foreground" />
+                </CardContent>
+              </Card>
+            </Link>
           ))}
-        </ul>
-      </div>
-    </>
+        </div>
+      )}
+    </div>
   );
 }

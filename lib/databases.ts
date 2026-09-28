@@ -19,10 +19,21 @@ export const getUserNameById = async (userId: number) => {
   return user.usename;
 };
 
-export const getDbsOfuser = async (userId: number) => {
-  const query = `SELECT datname FROM pg_catalog.pg_database WHERE pg_catalog.pg_database.datdba = $1;`;
+export type DatabaseSummary = { name: string; size: string | null };
+
+export const getDbsOfuser = async (
+  userId: number
+): Promise<DatabaseSummary[]> => {
+  // Size needs CONNECT on the database: null rather than failing the whole
+  // list if the admin user lacks it
+  const query = `SELECT datname,
+      CASE WHEN has_database_privilege(datname, 'CONNECT')
+        THEN pg_size_pretty(pg_database_size(datname)) END AS size
+    FROM pg_catalog.pg_database
+    WHERE pg_catalog.pg_database.datdba = $1
+    ORDER BY datname;`;
   const res = await pool.query(query, [userId]);
-  return res.rows.map(({ datname }) => datname);
+  return res.rows.map(({ datname, size }) => ({ name: datname, size }));
 };
 
 export async function checkIfDbExists(database: string) {
