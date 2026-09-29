@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRightIcon, PlusIcon } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getDatabasesCache } from "@/actions/databases";
@@ -11,8 +11,13 @@ export default async function DatabasesPage() {
     <div className="mx-auto max-w-lg space-y-6 py-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Your databases</h1>
-        <Link href="/databases/new" className={buttonVariants()}>
-          New database
+        <Link
+          href="/databases/new"
+          className={buttonVariants({ size: "icon" })}
+          aria-label="New database"
+          title="New database"
+        >
+          <PlusIcon className="size-4" />
         </Link>
       </div>
 
