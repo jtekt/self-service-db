@@ -34,7 +34,7 @@ export default async function DatabasesPage() {
               className="block"
             >
               <Card className="transition-colors hover:bg-accent/50">
-                <CardContent className="flex items-center justify-between gap-4">
+                <CardContent className="flex flex-row items-center justify-between gap-4">
                   <div className="min-w-0">
                     <p className="truncate font-medium">{database.name}</p>
                     {database.size && (
