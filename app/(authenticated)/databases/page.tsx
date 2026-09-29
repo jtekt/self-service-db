@@ -33,8 +33,8 @@ export default async function DatabasesPage() {
               href={`/databases/${database.name}`}
               className="block"
             >
-              <Card className="rounded-xl transition-colors hover:bg-accent/50">
-                <CardContent className="flex items-center justify-between gap-4 p-6">
+              <Card className="transition-colors hover:bg-accent/50">
+                <CardContent className="flex items-center justify-between gap-4">
                   <div className="min-w-0">
                     <p className="truncate font-medium">{database.name}</p>
                     {database.size && (
