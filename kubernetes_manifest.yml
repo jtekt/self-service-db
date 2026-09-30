@@ -31,8 +31,8 @@ spec:
               value: postgresql.ssc.jtektrnd.net
             - name: NEXT_PUBLIC_DB_PORT
               value: "5432"
-            # - name: NEXT_PUBLIC_DB_SSL_MODE
-            #   value: "require"
+            - name: NEXT_PUBLIC_DB_SSL_MODE
+              value: "require"
             - name: NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME
               value: "yes"
             - name: NEXT_PUBLIC_HELP_URL
