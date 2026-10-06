@@ -24,7 +24,7 @@ On/off flags are enabled by `true`, `1` or `yes` (any case). Anything else, incl
 | AWS_REGION                               | AWS region for the RDS Proxy / Secrets Manager calls                        | us-east-1                                |
 | NEXT_PUBLIC_DB_HOST                      | DB host as displayed to users                                               |                                          |
 | NEXT_PUBLIC_DB_PORT                      | DB port as displayed to users                                               |                                          |
-| NEXT_PUBLIC_DB_SSL_MODE                  | DB ssl mode as displayed to users                                           | disable                                  |
+| NEXT_PUBLIC_DB_SSL_MODE                  | `sslmode` shown to users and added to the connection string; omitted if unset |                                          |
 | NEXT_PUBLIC_PREFIX_DB_NAME_WITH_USERNAME | Prefix database names with username (on/off)                   |                                          |
 | NEXT_PUBLIC_DISABLE_USER_REGISTRATION    | Prevent user registration (on/off)                             |                                          |
 | NEXT_PUBLIC_DISABLE_DATABASE_CREATION    | Prevent database creation (on/off)                             |                                          |

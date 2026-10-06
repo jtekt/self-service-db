@@ -18,14 +18,17 @@ export default async function DatabasePage(props: { params: Promise<Params> }) {
   const params = await props.params;
   const NEXT_PUBLIC_DB_HOST = env("NEXT_PUBLIC_DB_HOST");
   const NEXT_PUBLIC_DB_PORT = env("NEXT_PUBLIC_DB_PORT");
-  const NEXT_PUBLIC_DB_SSL_MODE = env("NEXT_PUBLIC_DB_SSL_MODE") || "disable";
+  // Unset: omit sslmode so the client falls back to its own default (libpq: prefer)
+  const NEXT_PUBLIC_DB_SSL_MODE = env("NEXT_PUBLIC_DB_SSL_MODE");
 
   const database = await getDatabaseCache(params.name);
 
   const host = NEXT_PUBLIC_DB_HOST || database.host;
   const port = NEXT_PUBLIC_DB_PORT || database.port;
 
-  const urlQueryParameters = `?sslmode=${NEXT_PUBLIC_DB_SSL_MODE}`;
+  const urlQueryParameters = NEXT_PUBLIC_DB_SSL_MODE
+    ? `?sslmode=${NEXT_PUBLIC_DB_SSL_MODE}`
+    : "";
 
   const connectionString = `postgresql://${database.username}:YOUR_PASSWORD@${
     host
@@ -48,10 +51,9 @@ export default async function DatabasePage(props: { params: Promise<Params> }) {
       label: "User",
       value: database.username,
     },
-    {
-      label: "SSL mode",
-      value: NEXT_PUBLIC_DB_SSL_MODE,
-    },
+    ...(NEXT_PUBLIC_DB_SSL_MODE
+      ? [{ label: "SSL mode", value: NEXT_PUBLIC_DB_SSL_MODE }]
+      : []),
     {
       label: "Connection string",
       value: connectionString,
