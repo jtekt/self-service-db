@@ -23,8 +23,8 @@ spec:
               value: pooler.postgresql
             - name: DB_PORT
               value: "5432"
-            - name: DB_INSECURE
-              value: "true"
+            - name: DB_SSL_REJECT_UNAUTHORIZED
+              value: "false"
 
             # Public values
             - name: NEXT_PUBLIC_DB_HOST

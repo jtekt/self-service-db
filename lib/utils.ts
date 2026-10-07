@@ -10,3 +10,9 @@ export function cn(...inputs: ClassValue[]) {
 export function isEnabled(value: string | undefined): boolean {
   return ["true", "1", "yes"].includes(value?.trim().toLowerCase() ?? "")
 }
+
+// For flags that default to on: only "false", "0" or "no" (any case) turn
+// them off, so a typo or empty value keeps the safe default
+export function isDisabled(value: string | undefined): boolean {
+  return ["false", "0", "no"].includes(value?.trim().toLowerCase() ?? "")
+}

@@ -13,7 +13,7 @@ On/off flags are enabled by `true`, `1` or `yes` (any case). Anything else, incl
 | DB_USER                                  | Administrator username of the PostgreSQL instance                           | postgres                                 |
 | DB_PASSWORD                              | PostgreSQL® administrator password                                          | password                                 |
 | DB_USE_SSL                               | Connect to PostgreSQL using SSL (on/off)                       |                                          |
-| DB_INSECURE                              | With SSL, don't verify the server certificate (on/off)         |                                          |
+| DB_SSL_REJECT_UNAUTHORIZED               | With SSL, verify the server certificate (pg `rejectUnauthorized`); only `false`, `0` or `no` turn it off | true                                     |
 | ROLE_OPTIONS                             | Comma-separated options for created roles                                   | NOSUPERUSER,CREATEDB,CREATEROLE,INHERIT  |
 | SESSION_SECRET                           | Secret used to sign the session cookie                                      |                                          |
 | SESSION_COOKIE_NAME                      | Name of the session cookie                                                  | self_db_session                          |

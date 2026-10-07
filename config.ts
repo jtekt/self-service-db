@@ -4,7 +4,7 @@ export const {
   DB_USER = "postgres",
   DB_PASSWORD = "password",
   DB_USE_SSL,
-  DB_INSECURE,
+  DB_SSL_REJECT_UNAUTHORIZED,
 
   SESSION_COOKIE_NAME = "self_db_session",
   SESSION_SECRET = "",
