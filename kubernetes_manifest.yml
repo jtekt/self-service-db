@@ -86,7 +86,7 @@ kind: HTTPRoute
 metadata:
   name: self-service-db
   annotations:
-    gethomepage.dev/enabled: "false"
+    gethomepage.dev/enabled: "true"
     gethomepage.dev/group: Self-Service Suite
     gethomepage.dev/name: Self-service DB
     gethomepage.dev/description: Allows users to create databases in PostgreSQL on their own
@@ -102,4 +102,3 @@ spec:
     - backendRefs:
         - name: self-service-db
           port: 3000
-
