@@ -81,6 +81,36 @@ spec:
     name: self-service-db-es
     creationPolicy: Orphan
 ---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: self-service-db
+  annotations:
+    alb.ingress.kubernetes.io/success-codes: 200-399
+
+    # TODO: remove once configured at IngressClassParams level
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/group: Self-Service Suite
+    gethomepage.dev/name: Self-service DB
+    gethomepage.dev/description: Allows users to create databases in PostgreSQL on their own
+    gethomepage.dev/icon: http://gitlab.jtektrnd.net/uploads/-/system/project/avatar/2229/self-db.png
+spec:
+  rules:
+    - host: self-service-db.ssc.jtektrnd.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: self-service-db
+                port:
+                  number: 3000
+
+---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
