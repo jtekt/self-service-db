@@ -102,7 +102,4 @@ spec:
     - backendRefs:
         - name: self-service-db
           port: 3000
-      matches:
-        - path:
-            type: PathPrefix
-            value: /
+
